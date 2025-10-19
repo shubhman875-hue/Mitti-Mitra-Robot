@@ -373,7 +373,7 @@
                 <select class="region-selector glass" id="regionSelect">
                     <optgroup label="Chandigarh Tricity">
                         <option value="Panchkula,IN">Panchkula, Haryana</option>
-                        <option value="Chandigarh,IN">Chandigarh</option>
+                        <option value="Chandigarh,IN" selected>Chandigarh</option>
                         <option value="Mohali,IN">Mohali, Punjab</option>
                     </optgroup>
                     <optgroup label="Haryana">
@@ -477,7 +477,7 @@
             <button class="btn btn-primary" onclick="refresh()">
                 🔄 <span id="rbtn">Refresh</span>
             </button>
-            <button class="btn btn-secondary" onclick="history()">
+            <button class="btn btn-secondary" onclick="showHistory()">
                 📊 <span id="hbtn">History</span>
             </button>
         </div>
@@ -503,6 +503,7 @@
         async function getWeather(city) {
             try {
                 const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${KEY}&units=metric`);
+                if (!res.ok) throw new Error('Weather fetch failed');
                 const d = await res.json();
                 return {
                     name: d.name,
@@ -512,6 +513,7 @@
                     wind: Math.round(d.wind.speed * 3.6)
                 };
             } catch(e) {
+                console.error('Weather error:', e);
                 return null;
             }
         }
@@ -520,10 +522,11 @@
             const map = {
                 'Panchkula,IN': ['Panchkula,IN','Chandigarh,IN','Mohali,IN','Ambala,IN'],
                 'Chandigarh,IN': ['Chandigarh,IN','Panchkula,IN','Mohali,IN'],
+                'Mohali,IN': ['Mohali,IN','Chandigarh,IN','Panchkula,IN'],
                 'Delhi,IN': ['Delhi,IN','Noida,IN','Gurugram,IN','Ghaziabad,IN'],
-                'Mumbai,IN': ['Mumbai,IN','Pune,IN','Nashik,IN'],
-                'Bangalore,IN': ['Bangalore,IN','Mysore,IN','Mangalore,IN'],
-                'Chennai,IN': ['Chennai,IN','Coimbatore,IN','Madurai,IN']
+                'Mumbai,IN': ['Mumbai,IN','Pune,IN'],
+                'Bangalore,IN': ['Bangalore,IN','Mysore,IN'],
+                'Chennai,IN': ['Chennai,IN','Coimbatore,IN']
             };
             return map[c] || [c];
         }
@@ -537,7 +540,14 @@
             const data = await Promise.all(cities.map(c => getWeather(c)));
             
             box.innerHTML = '';
-            data.filter(d => d).forEach(w => {
+            const validData = data.filter(d => d);
+            
+            if (validData.length === 0) {
+                box.innerHTML = '<div class="loading">Weather data unavailable</div>';
+                return;
+            }
+            
+            validData.forEach(w => {
                 box.innerHTML += `
                     <div class="weather-card glass">
                         <div class="weather-city">${w.name}</div>
@@ -563,22 +573,24 @@
 
         function refresh() {
             loadWeather();
-            document.getElementById('langSelect').addEventListener('change', changeLang);
+        }
+
+        function showHistory() {
+            alert('📊 Opening history...');
+        }
+
+        // Initialize event listeners
+        document.getElementById('langSelect').addEventListener('change', changeLang);
         document.getElementById('regionSelect').addEventListener('change', loadWeather);
-        
+
+        // Load initial weather
         loadWeather();
-        
+
+        // Update time periodically
         setInterval(() => {
             const m = Math.floor(Math.random() * 5) + 1;
             document.getElementById('time').textContent = `${m} min ago`;
         }, 60000);
     </script>
 </body>
-</html>time').textContent = 'Just now';
-        }
-
-        function history() {
-            alert('📊 Opening history...');
-        }
-
-        document.getElementById('
+</html>
