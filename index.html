@@ -372,37 +372,37 @@
             <div class="region-selector-container">
                 <select class="region-selector glass" id="regionSelect">
                     <optgroup label="Chandigarh Tricity">
-                        <option value="Panchkula,IN">Panchkula, Haryana</option>
-                        <option value="Chandigarh,IN" selected>Chandigarh</option>
-                        <option value="Mohali,IN">Mohali, Punjab</option>
+                        <option value="30.3919,76.6241">Panchkula, Haryana</option>
+                        <option value="30.7333,76.7794">Chandigarh</option>
+                        <option value="30.8498,76.8303">Mohali, Punjab</option>
                     </optgroup>
                     <optgroup label="Haryana">
-                        <option value="Gurugram,IN">Gurugram</option>
-                        <option value="Faridabad,IN">Faridabad</option>
-                        <option value="Ambala,IN">Ambala</option>
-                        <option value="Karnal,IN">Karnal</option>
-                        <option value="Panipat,IN">Panipat</option>
+                        <option value="28.4595,77.0266">Gurugram</option>
+                        <option value="28.7041,77.1025">Faridabad</option>
+                        <option value="30.1575,77.2840">Ambala</option>
+                        <option value="29.3803,76.9694">Karnal</option>
+                        <option value="28.9931,76.8672">Panipat</option>
                     </optgroup>
                     <optgroup label="Punjab">
-                        <option value="Ludhiana,IN">Ludhiana</option>
-                        <option value="Amritsar,IN">Amritsar</option>
-                        <option value="Jalandhar,IN">Jalandhar</option>
-                        <option value="Patiala,IN">Patiala</option>
+                        <option value="30.9010,75.8573">Ludhiana</option>
+                        <option value="31.6340,74.8723">Amritsar</option>
+                        <option value="31.3260,75.5762">Jalandhar</option>
+                        <option value="30.7046,76.7179">Patiala</option>
                     </optgroup>
                     <optgroup label="Delhi NCR">
-                        <option value="Delhi,IN">Delhi</option>
-                        <option value="Noida,IN">Noida</option>
-                        <option value="Ghaziabad,IN">Ghaziabad</option>
+                        <option value="28.6139,77.2090">Delhi</option>
+                        <option value="28.6692,77.4538">Noida</option>
+                        <option value="28.6304,77.3768">Ghaziabad</option>
                     </optgroup>
                     <optgroup label="Major Cities">
-                        <option value="Mumbai,IN">Mumbai</option>
-                        <option value="Bangalore,IN">Bangalore</option>
-                        <option value="Chennai,IN">Chennai</option>
-                        <option value="Kolkata,IN">Kolkata</option>
-                        <option value="Hyderabad,IN">Hyderabad</option>
-                        <option value="Pune,IN">Pune</option>
-                        <option value="Ahmedabad,IN">Ahmedabad</option>
-                        <option value="Jaipur,IN">Jaipur</option>
+                        <option value="19.0760,72.8777">Mumbai</option>
+                        <option value="12.9716,77.5946">Bangalore</option>
+                        <option value="13.0827,80.2707">Chennai</option>
+                        <option value="22.5726,88.3639">Kolkata</option>
+                        <option value="17.3850,78.4867">Hyderabad</option>
+                        <option value="18.5204,73.8567">Pune</option>
+                        <option value="23.0225,72.5714">Ahmedabad</option>
+                        <option value="26.9124,75.7873">Jaipur</option>
                     </optgroup>
                 </select>
             </div>
@@ -456,20 +456,20 @@
             <h3 class="section-title" id="rtitle">💡 Recommendations</h3>
             
             <div class="recommendation-card glass">
-                <div class="recommendation-title" id="rec1">⚠️ Soil is dry</div>
-                <span class="recommendation-action" id="rec1a">→ Water immediately</span>
-                <span class="recommendation-action" id="rec1b">→ Apply mulch layer</span>
+                <div class="recommendation-title">⚠️ <span id="rec1">Soil is dry</span></div>
+                <span class="recommendation-action">→ <span id="rec1a">Water immediately</span></span>
+                <span class="recommendation-action">→ <span id="rec1b">Apply mulch layer</span></span>
             </div>
 
             <div class="recommendation-card glass">
-                <div class="recommendation-title" id="rec2">🔴 Nitrogen deficiency</div>
-                <span class="recommendation-action" id="rec2a">→ Add Neem Cake: 50g/plant</span>
-                <span class="recommendation-action" id="rec2b">→ Or Vermicompost: 200g</span>
+                <div class="recommendation-title">🔴 <span id="rec2">Nitrogen deficiency</span></div>
+                <span class="recommendation-action">→ <span id="rec2a">Add Neem Cake: 50g/plant</span></span>
+                <span class="recommendation-action">→ <span id="rec2b">Or Vermicompost: 200g</span></span>
             </div>
 
             <div class="recommendation-card glass">
-                <div class="recommendation-title" id="rec3">✅ pH is optimal</div>
-                <span class="recommendation-action" id="rec3a">→ No action needed</span>
+                <div class="recommendation-title">✅ <span id="rec3">pH is optimal</span></div>
+                <span class="recommendation-action">→ <span id="rec3a">No action needed</span></span>
             </div>
         </div>
 
@@ -477,89 +477,92 @@
             <button class="btn btn-primary" onclick="refresh()">
                 🔄 <span id="rbtn">Refresh</span>
             </button>
-            <button class="btn btn-secondary" onclick="showHistory()">
+            <button class="btn btn-secondary" onclick="history()">
                 📊 <span id="hbtn">History</span>
             </button>
         </div>
     </div>
 
     <script>
-        const KEY = '3045dd712ffe6e702e3245525ac7fa38';
-        
         const lang = {
-            en: {title:'Mitti Mitra Robot',sub:'Smart Farming Assistant',status:'Connected',wtitle:'🌦️ Weather Forecast',stitle:'📊 Sensor Readings',rtitle:'💡 Recommendations',ph:'pH Level',moist:'Moisture',nitro:'Nitrogen',opt:'Optimal',low:'Low',crit:'Critical',lval:'Low',r1:'Range:',r2:'Range:',rbtn:'Refresh',hbtn:'History',rec1:'⚠️ Soil is dry',rec1a:'→ Water immediately',rec1b:'→ Apply mulch layer',rec2:'🔴 Nitrogen deficiency',rec2a:'→ Add Neem Cake: 50g/plant',rec2b:'→ Or Vermicompost: 200g',rec3:'✅ pH is optimal',rec3a:'→ No action needed'},
-            hi: {title:'मिट्टी मित्र रोबोट',sub:'स्मार्ट खेती सहायक',status:'जुड़ा',wtitle:'🌦️ मौसम',stitle:'📊 सेंसर',rtitle:'💡 सिफारिशें',ph:'पीएच',moist:'नमी',nitro:'नाइट्रोजन',opt:'बढ़िया',low:'कम',crit:'गंभीर',lval:'कम',r1:'सीमा:',r2:'सीमा:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'⚠️ मिट्टी सूखी',rec1a:'→ तुरंत पानी दें',rec1b:'→ गीली घास लगाएं',rec2:'🔴 नाइट्रोजन कमी',rec2a:'→ नीम खली डालें',rec2b:'→ वर्मीकम्पोस्ट दें',rec3:'✅ पीएच ठीक है',rec3a:'→ कुछ नहीं'},
-            ta: {title:'மிட்டி மித்ரா',sub:'விவசாய உதவி',status:'இணைப்பு',wtitle:'🌦️ வானிலை',stitle:'📊 சென்சார்',rtitle:'💡 பரிந்துரை',ph:'pH',moist:'ஈரம்',nitro:'நைட்ரஜன்',opt:'நல்லது',low:'குறைவு',crit:'அவசரம்',lval:'குறைவு',r1:'வரம்பு:',r2:'வரம்பு:',rbtn:'புதுப்பி',hbtn:'வரலாறு'},
-            te: {title:'మిట్టి మిత్ర',sub:'వ్యవసాయం',status:'కనెక్ట్',wtitle:'🌦️ వాతావరణం',stitle:'📊 సెన్సార్',rtitle:'💡 సూచనలు',ph:'pH',moist:'తేమ',nitro:'నైట్రోజన్',opt:'మంచి',low:'తక్కువ',crit:'తీవ్రం',lval:'తక్కువ',r1:'పరిధి:',r2:'పరిధి:',rbtn:'రిఫ్రెష్',hbtn:'చరిత్ర'},
-            mr: {title:'मिट्टी मित्र',sub:'शेती मदत',status:'जोडले',wtitle:'🌦️ हवामान',stitle:'📊 सेन्सर',rtitle:'💡 सूचना',ph:'pH',moist:'ओलावा',nitro:'नायट्रोजन',opt:'चांगले',low:'कमी',crit:'गंभीर',lval:'कमी',r1:'श्रेणी:',r2:'श्रेणी:',rbtn:'रीफ्रेश',hbtn:'इतिहास'},
-            kn: {title:'ಮಿಟ್ಟಿ ಮಿತ್ರ',sub:'ಕೃಷಿ',status:'ಸಂಪರ್ಕ',wtitle:'🌦️ ಹವಾಮಾನ',stitle:'📊 ಸೆನ್ಸಾರ್',rtitle:'💡 ಸೂಚನೆ',ph:'pH',moist:'ತೇವಾಂಶ',nitro:'ನೈಟ್ರೋಜನ್',opt:'ಉತ್ತಮ',low:'ಕಡಿಮೆ',crit:'ತೀವ್ರ',lval:'ಕಡಿಮೆ',r1:'ವ್ಯಾಪ್ತಿ:',r2:'ವ್ಯಾಪ್ತಿ:',rbtn:'ರಿಫ್ರೆಶ್',hbtn:'ಇತಿಹಾಸ'},
-            bn: {title:'মিট্টি মিত্র',sub:'কৃষি সাহায্য',status:'সংযুক্ত',wtitle:'🌦️ আবহাওয়া',stitle:'📊 সেন্সর',rtitle:'💡 পরামর্শ',ph:'pH',moist:'আর্দ্রতা',nitro:'নাইট্রোজেন',opt:'ভাল',low:'কম',crit:'জরুরি',lval:'কম',r1:'সীমা:',r2:'সীমা:',rbtn:'রিফ্রেশ',hbtn:'ইতিহাস'},
-            gu: {title:'મિટ્ટી મિત્ર',sub:'ખેતી મદદ',status:'જોડાયું',wtitle:'🌦️ હવામાન',stitle:'📊 સેન્સર',rtitle:'💡 સલાહ',ph:'pH',moist:'ભેજ',nitro:'નાઈટ્રોજન',opt:'સારું',low:'ઓછું',crit:'ગંભીર',lval:'ઓછું',r1:'શ્રેણી:',r2:'શ્રેણી:',rbtn:'રિફ્રેશ',hbtn:'ઇતિહાસ'},
-            pa: {title:'ਮਿੱਟੀ ਮਿੱਤਰ',sub:'ਖੇਤੀ ਸਹਾਇਕ',status:'ਜੁੜਿਆ',wtitle:'🌦️ ਮੌਸਮ',stitle:'📊 ਸੈਂਸਰ',rtitle:'💡 ਸਲਾਹ',ph:'pH',moist:'ਨਮੀ',nitro:'ਨਾਈਟ੍ਰੋਜਨ',opt:'ਵਧੀਆ',low:'ਘੱਟ',crit:'ਗੰਭੀਰ',lval:'ਘੱਟ',r1:'ਰੇਂਜ:',r2:'ਰੇਂਜ:',rbtn:'ਤਾਜ਼ਾ',hbtn:'ਇਤਿਹਾਸ'},
-            ml: {title:'മിട്ടി മിത്ര',sub:'കൃഷി സഹായി',status:'കണക്റ്റഡ്',wtitle:'🌦️ കാലാവസ്ഥ',stitle:'📊 സെൻസർ',rtitle:'💡 നിർദ്ദേശം',ph:'pH',moist:'ഈർപ്പം',nitro:'നൈട്രജൻ',opt:'നല്ലത്',low:'കുറവ്',crit:'ഗുരുതരം',lval:'കുറവ്',r1:'പരിധി:',r2:'പരിധി:',rbtn:'റിഫ്രഷ്',hbtn:'ചരിത്രം'},
-            or: {title:'ମିଟି ମିତ୍ର',sub:'କୃଷି ସହାୟକ',status:'ସଂଯୁକ୍ତ',wtitle:'🌦️ ପାଣିପାଗ',stitle:'📊 ସେନ୍ସର',rtitle:'💡 ପରାମର୍ଶ',ph:'pH',moist:'ଆର୍ଦ୍ରତା',nitro:'ନାଇଟ୍ରୋଜେନ',opt:'ଉତ୍ତମ',low:'କମ୍',crit:'ଗୁରୁତର',lval:'କମ୍',r1:'ସୀମା:',r2:'ସୀମା:',rbtn:'ରିଫ୍ରେଶ',hbtn:'ଇତିହାସ'}
+            en: {title:'Mitti Mitra Robot',sub:'Smart Farming Assistant',status:'Connected',wtitle:'🌦️ Weather Forecast',stitle:'📊 Sensor Readings',rtitle:'💡 Recommendations',ph:'pH Level',moist:'Moisture',nitro:'Nitrogen',opt:'Optimal',low:'Low',crit:'Critical',lval:'Low',r1:'Range:',r2:'Range:',rbtn:'Refresh',hbtn:'History',rec1:'Soil is dry',rec1a:'→ Water immediately',rec1b:'→ Apply mulch layer',rec2:'Nitrogen deficiency',rec2a:'→ Add Neem Cake: 50g/plant',rec2b:'→ Or Vermicompost: 200g',rec3:'pH is optimal',rec3a:'→ No action needed'},
+            hi: {title:'मिट्टी मित्र रोबोट',sub:'स्मार्ट खेती सहायक',status:'जुड़ा',wtitle:'🌦️ मौसम',stitle:'📊 सेंसर',rtitle:'💡 सिफारिशें',ph:'पीएच',moist:'नमी',nitro:'नाइट्रोजन',opt:'बढ़िया',low:'कम',crit:'गंभीर',lval:'कम',r1:'सीमा:',r2:'सीमा:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'मिट्टी सूखी है',rec1a:'→ तुरंत पानी दें',rec1b:'→ गीली घास लगाएं',rec2:'नाइट्रोजन की कमी',rec2a:'→ नीम खली 50g डालें',rec2b:'→ या वर्मीकम्पोस्ट 200g',rec3:'पीएच ठीक है',rec3a:'→ कोई कार्रवाई नहीं'},
+            ta: {title:'மிட்டி மித்ரா',sub:'விவசாய உதவி',status:'இணைப்பு',wtitle:'🌦️ வானிலை',stitle:'📊 சென்சார்',rtitle:'💡 பரிந்துரைகள்',ph:'pH',moist:'ஈரம்',nitro:'நைட்ரஜன்',opt:'நல்லது',low:'குறைவு',crit:'அவசரம்',lval:'குறைவு',r1:'வரம்பு:',r2:'வரம்பு:',rbtn:'புதுப்பி',hbtn:'வரலாறு',rec1:'மண்건조',rec1a:'→ உடனடியாக நீர் பாய்ச்சவும்',rec1b:'→ சறுக்கு போடவும்',rec2:'நைட்ரஜன் குறைபாடு',rec2a:'→ நீம் புண்ணாக்கு 50g',rec2b:'→ அல்லது பூச்சி உரம் 200g',rec3:'pH சரியாக உள்ளது',rec3a:'→ நடவடிக்கை தேவையில்லை'},
+            te: {title:'మిట్టి మిత్ర',sub:'వ్యవసాయ సహాయక',status:'కనెక్ట్',wtitle:'🌦️ వాతావరణం',stitle:'📊 సెన్సార్',rtitle:'💡 సూచనలు',ph:'pH',moist:'తేమ',nitro:'నైట్రోజన్',opt:'మంచి',low:'తక్కువ',crit:'తీవ్రం',lval:'తక్కువ',r1:'పరిధి:',r2:'పరిధి:',rbtn:'రిఫ్రెష్',hbtn:'చరిత్ర',rec1:'మట్టి건조',rec1a:'→ వెంటనే నీళ్లు పోయండి',rec1b:'→ మల్చ్ పెట్టండి',rec2:'నైట్రోజన్ కూర్పు',rec2a:'→ నీమ్ కేక్ 50g',rec2b:'→ లేదా వర్మీకంపోస్ట్ 200g',rec3:'pH సరిగ్గా ఉంది',rec3a:'→ చర్య అవసరం లేదు'},
+            mr: {title:'मिट्टी मित्र',sub:'शेती मदत',status:'जोडले',wtitle:'🌦️ हवामान',stitle:'📊 सेन्सर',rtitle:'💡 सूचना',ph:'pH',moist:'ओलावा',nitro:'नायट्रोजन',opt:'चांगले',low:'कमी',crit:'गंभीर',lval:'कमी',r1:'श्रेणी:',r2:'श्रेणी:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'मिट्टी कोरडी आहे',rec1a:'→ लगेच पाणी द्या',rec1b:'→ मल्च लावा',rec2:'नायट्रोजन कमी',rec2a:'→ नीम केक 50g',rec2b:'→ किंवा व्हर्मीकम्पोस्ट 200g',rec3:'pH ठीक आहे',rec3a:'→ कार्य करण्याची गरज नाही'},
+            kn: {title:'ಮಿಟ್ಟಿ ಮಿತ್ರ',sub:'ಕೃಷಿ ಸಹಾಯಕ',status:'ಸಂಪರ್ಕ',wtitle:'🌦️ ಹವಾಮಾನ',stitle:'📊 ಸೆನ್ಸಾರ್',rtitle:'💡 ಸೂಚನೆಗಳು',ph:'pH',moist:'ತೇವಾಂಶ',nitro:'ನೈಟ್ರೋಜನ್',opt:'ಉತ್ತಮ',low:'ಕಡಿಮೆ',crit:'ತೀವ್ರ',lval:'ಕಡಿಮೆ',r1:'ವ್ಯಾಪ್ತಿ:',r2:'ವ್ಯಾಪ್ತಿ:',rbtn:'ರಿಫ್ರೆಶ್',hbtn:'ಇತಿಹಾಸ',rec1:'ಮಣ್ಣು ಒಣಗಿದೆ',rec1a:'→ ತಕ್ಷಣ ನೀರು ಹಾಕಿ',rec1b:'→ ಮಲ್ಚ್ ಹಾಕಿ',rec2:'ನೈಟ್ರೋಜನ್ ಕೊರತೆ',rec2a:'→ ನೀಮ್ ಕೇಕ್ 50g',rec2b:'→ ಅಥವಾ ವರ್ಮಿಕಂಪೋಸ್ಟ್ 200g',rec3:'pH ಸರಿಯಾಗಿದೆ',rec3a:'→ ಯಾವುದೇ ಕ್ರಮ ಬೇಕಾಗಿಲ್ಲ'},
+            bn: {title:'মিট্টি মিত্র',sub:'কৃষি সাহায্য',status:'সংযুক্ত',wtitle:'🌦️ আবহাওয়া',stitle:'📊 সেন্সর',rtitle:'💡 পরামর্শ',ph:'pH',moist:'আর্দ্রতা',nitro:'নাইট্রোজেন',opt:'ভাল',low:'কম',crit:'জরুরি',lval:'কম',r1:'সীমা:',r2:'সীমা:',rbtn:'রিফ্রেশ',hbtn:'ইতিহাস',rec1:'মাটি শুষ্ক',rec1a:'→ এখনই জল দিন',rec1b:'→ সার দিন',rec2:'নাইট্রোজেন ঘাটতি',rec2a:'→ নিম খৈল 50g',rec2b:'→ বা ভার্মিকম্পোস্ট 200g',rec3:'pH সঠিক',rec3a:'→ কোনো ব্যবস্থা প্রয়োজন নেই'},
+            gu: {title:'મિટ્ટી મિત્ર',sub:'ખેતી મદદ',status:'જોડાયું',wtitle:'🌦️ હવામાન',stitle:'📊 સેન્સર',rtitle:'💡 સલાહ',ph:'pH',moist:'ભેજ',nitro:'નાઈટ્રોજન',opt:'સારું',low:'ઓછું',crit:'ગંભીર',lval:'ઓછું',r1:'શ્રેણી:',r2:'શ્રેણી:',rbtn:'રિફ્રેશ',hbtn:'ઇતિહાસ',rec1:'માટી건조',rec1a:'→ તરત જ પાણી આપો',rec1b:'→ અછાર પોતાર કરો',rec2:'નાઈટ્રોજન ઘટ',rec2a:'→ નીમ કેક 50g',rec2b:'→ અથવા વર્મીકમ્પોસ્ટ 200g',rec3:'pH સારું છે',rec3a:'→ કોઈ પગલાં આવશ્યક નથી'},
+            pa: {title:'ਮਿੱਟੀ ਮਿੱਤਰ',sub:'ਖੇਤੀ ਸਹਾਇਕ',status:'ਜੁੜਿਆ',wtitle:'🌦️ ਮੌਸਮ',stitle:'📊 ਸੈਂਸਰ',rtitle:'💡 ਸਲਾਹ',ph:'pH',moist:'ਨਮੀ',nitro:'ਨਾਈਟ੍ਰੋਜਨ',opt:'ਵਧੀਆ',low:'ਘੱਟ',crit:'ਗੰਭੀਰ',lval:'ਘੱਟ',r1:'ਰੇਂਜ:',r2:'ਰੇਂਜ:',rbtn:'ਤਾਜ਼ਾ',hbtn:'ਇਤਿਹਾਸ',rec1:'ਮਿੱਟੀ ਖੁਸ਼ਕ',rec1a:'→ ਫੌਰਨ ਪਾਣੀ ਦਿਓ',rec1b:'→ ਮਲਚ ਲਾਓ',rec2:'ਨਾਈਟ੍ਰੋਜਨ ਘਾਟ',rec2a:'→ ਨੀਮ ਕੇਕ 50g',rec2b:'→ ਜ ਵਰਮੀਕਮਪੋਸਟ 200g',rec3:'pH ਠੀਕ ਹੈ',rec3a:'→ ਕੋਈ ਕਾਰ ਵਾਈ ਨਹੀਂ'},
+            ml: {title:'മിട്ടി മിത്ര',sub:'കൃഷി സഹായി',status:'കണക്റ്റഡ്',wtitle:'🌦️ കാലാവസ്ഥ',stitle:'📊 സെൻസർ',rtitle:'💡 നിർദ്ദേശം',ph:'pH',moist:'ഈർപ്പം',nitro:'നൈട്രജൻ',opt:'നല്ലത്',low:'കുറവ്',crit:'ഗുരുതരം',lval:'കുറവ്',r1:'പരിധി:',r2:'പരിധി:',rbtn:'റിഫ്രഷ്',hbtn:'ചരിത്രം',rec1:'മണ്ണ് കാടികിട്ടിരിക്കുന്നു',rec1a:'→ ഉടനെ വെള്ളം ഒഴിക്കുക',rec1b:'→ മൽച്ച് ചേർക്കുക',rec2:'നൈട്രജൻ കുറവ്',rec2a:'→ നീം കേക് 50g',rec2b:'→ അല്ലെങ്കിൽ വെർമിക്കൊമ്പോസ്റ്റ് 200g',rec3:'pH സരിയാണ്',rec3a:'→ ഒരു നടപടിയും ആവശ്യമില്ല'},
+            or: {title:'ମିଟି ମିତ୍ର',sub:'କୃଷି ସହାୟକ',status:'ସଂଯୁକ୍ତ',wtitle:'🌦️ ପାଣିପାଗ',stitle:'📊 ସେନ୍ସର',rtitle:'💡 ପରାମର୍ଶ',ph:'pH',moist:'ଆର୍ଦ୍ରତା',nitro:'ନାଇଟ୍ରୋଜେନ',opt:'ଉତ୍ତମ',low:'କମ୍',crit:'ଗୁରୁତର',lval:'କମ୍',r1:'ସୀମା:',r2:'ସୀମା:',rbtn:'ରିଫ୍ରେଶ',hbtn:'ଇତିହାସ',rec1:'ମାଟି ଶୁଷ୍କ',rec1a:'→ ତଥକ୍ଷଣାତ ଜଳ ଦିଅନ୍ତୁ',rec1b:'→ ମଲ୍ଚ ଦିଅନ୍ତୁ',rec2:'ନାଇଟ୍ରୋଜେନ ଅଭାବ',rec2a:'→ ନିମ କେକ 50g',rec2b:'→ କିମ୍ବା ଭର୍ମିକମ୍ପୋଷ୍ଟ 200g',rec3:'pH ଠିକ ଅଛି',rec3a:'→ କୌଣସି ପଦକ୍ଷେପ ଆବଶ୍ୟକ ନାହିଁ'}
         };
 
-        async function getWeather(city) {
+        async function getWeather(lat, lon) {
             try {
-                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${KEY}&units=metric`);
-                if (!res.ok) throw new Error('Weather fetch failed');
-                const d = await res.json();
-                return {
-                    name: d.name,
-                    temp: Math.round(d.main.temp),
-                    desc: d.weather[0].main,
-                    hum: d.main.humidity,
-                    wind: Math.round(d.wind.speed * 3.6)
-                };
+                const res = await fetch(
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&timezone=Asia/Kolkata&forecast_days=7`,
+                    { mode: 'cors' }
+                );
+                if (!res.ok) throw new Error('API error');
+                return await res.json();
             } catch(e) {
                 console.error('Weather error:', e);
                 return null;
             }
         }
 
-        function nearby(c) {
-            const map = {
-                'Panchkula,IN': ['Panchkula,IN','Chandigarh,IN','Mohali,IN','Ambala,IN'],
-                'Chandigarh,IN': ['Chandigarh,IN','Panchkula,IN','Mohali,IN'],
-                'Mohali,IN': ['Mohali,IN','Chandigarh,IN','Panchkula,IN'],
-                'Delhi,IN': ['Delhi,IN','Noida,IN','Gurugram,IN','Ghaziabad,IN'],
-                'Mumbai,IN': ['Mumbai,IN','Pune,IN'],
-                'Bangalore,IN': ['Bangalore,IN','Mysore,IN'],
-                'Chennai,IN': ['Chennai,IN','Coimbatore,IN']
-            };
-            return map[c] || [c];
+        function getWeatherIcon(code) {
+            if (code === 0 || code === 1) return '☀️';
+            if (code === 2 || code === 3) return '⛅';
+            if (code === 45 || code === 48) return '🌫️';
+            if (code >= 51 && code <= 67) return '🌧️';
+            if (code >= 71 && code <= 77) return '❄️';
+            if (code >= 80 && code <= 82) return '🌧️';
+            if (code >= 85 && code <= 86) return '🌨️';
+            if (code >= 95) return '⛈️';
+            return '🌤️';
         }
 
         async function loadWeather() {
             const box = document.getElementById('weatherBox');
-            const city = document.getElementById('regionSelect').value;
-            box.innerHTML = '<div class="loading">Loading...</div>';
+            const coords = document.getElementById('regionSelect').value.split(',');
+            const lat = parseFloat(coords[0]);
+            const lon = parseFloat(coords[1]);
             
-            const cities = nearby(city);
-            const data = await Promise.all(cities.map(c => getWeather(c)));
+            box.innerHTML = '<div class="loading">Loading weather...</div>';
             
-            box.innerHTML = '';
-            const validData = data.filter(d => d);
+            const data = await getWeather(lat, lon);
             
-            if (validData.length === 0) {
-                box.innerHTML = '<div class="loading">Weather data unavailable</div>';
+            if (!data) {
+                box.innerHTML = '<div class="loading">Weather unavailable</div>';
                 return;
             }
-            
-            validData.forEach(w => {
-                box.innerHTML += `
-                    <div class="weather-card glass">
-                        <div class="weather-city">${w.name}</div>
-                        <div class="weather-temp">${w.temp}°C</div>
-                        <div class="weather-condition">${w.desc}</div>
-                        <div class="weather-details">
-                            <div>💧 ${w.hum}%</div>
-                            <div>🌬️ ${w.wind}km/h</div>
-                        </div>
-                    </div>
+
+            box.innerHTML = '';
+            const daily = data.daily;
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date().getDay();
+
+            for (let i = 0; i < 7; i++) {
+                const dayIndex = (today + i) % 7;
+                const dayName = i === 0 ? 'Today' : days[dayIndex];
+                const maxTemp = Math.round(daily.temperature_2m_max[i]);
+                const minTemp = Math.round(daily.temperature_2m_min[i]);
+                const code = daily.weathercode[i];
+
+                const card = document.createElement('div');
+                card.className = 'weather-card glass';
+                card.innerHTML = `
+                    <div class="weather-city" style="margin-bottom: 12px;">${dayName}</div>
+                    <div style="font-size: 32px; margin: 8px 0;">${getWeatherIcon(code)}</div>
+                    <div class="weather-temp">${maxTemp}°</div>
+                    <div style="font-size: 12px; color: rgba(201, 209, 217, 0.6); margin-bottom: 8px;">${minTemp}°</div>
+                    <div class="weather-condition">${data.daily.weathercode[i] ? 'Fair' : 'Clear'}</div>
+                    ${data.daily.precipitation_probability_max[i] > 30 ? `<div style="color: #22d3ee; font-size: 11px; margin-top: 5px;">💧 ${data.daily.precipitation_probability_max[i]}%</div>` : ''}
                 `;
-            });
+                box.appendChild(card);
+            }
         }
 
         function changeLang() {
@@ -567,13 +570,7 @@
             const t = lang[l];
             Object.keys(t).forEach(k => {
                 const el = document.getElementById(k);
-                if(el) {
-                    if (k === 'sub') {
-                        el.textContent = t[k];
-                    } else {
-                        el.textContent = t[k];
-                    }
-                }
+                if(el) el.textContent = t[k];
             });
         }
 
@@ -581,18 +578,15 @@
             loadWeather();
         }
 
-        function showHistory() {
+        function history() {
             alert('📊 Opening history...');
         }
 
-        // Initialize event listeners
         document.getElementById('langSelect').addEventListener('change', changeLang);
         document.getElementById('regionSelect').addEventListener('change', loadWeather);
 
-        // Load initial weather
         loadWeather();
 
-        // Update time periodically
         setInterval(() => {
             const m = Math.floor(Math.random() * 5) + 1;
             document.getElementById('time').textContent = `${m} min ago`;
