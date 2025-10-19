@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mitti Mitra Robot - Smart Farming Assistant</title>
+    <title>Mitti Mitra Robot</title>
     <style>
         * {
             margin: 0;
@@ -13,10 +13,10 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(180deg, #1e1e3f 0%, #2d2d5f 50%, #1a1a3e 100%);
+            background: linear-gradient(180deg, #1a1f3a 0%, #2d3561 50%, #1e243e 100%);
             min-height: 100vh;
-            color: #fff;
-            padding: 20px;
+            color: #c9d1d9;
+            padding: 15px;
         }
 
         .container {
@@ -25,49 +25,50 @@
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: rgba(30, 36, 62, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
+            padding-top: 10px;
         }
 
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            color: #fff;
+            font-size: 26px;
+            margin-bottom: 6px;
+            color: #ffffff;
             font-weight: 600;
         }
 
         .subtitle {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 15px;
+            color: rgba(201, 209, 217, 0.6);
+            font-size: 14px;
         }
 
         .language-selector {
             position: absolute;
             top: 0;
             right: 0;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(30, 36, 62, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 15px;
             border-radius: 20px;
-            color: white;
-            font-size: 14px;
+            color: #c9d1d9;
+            font-size: 13px;
             cursor: pointer;
         }
 
         .status-bar {
-            padding: 16px 20px;
-            border-radius: 16px;
-            margin-bottom: 20px;
+            padding: 14px 18px;
+            border-radius: 15px;
+            margin-bottom: 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -77,15 +78,15 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
+            background: #4ade80;
+            box-shadow: 0 0 12px #4ade80;
             animation: pulse 2s infinite;
         }
 
@@ -95,47 +96,42 @@
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 12px;
+            color: #ffffff;
         }
 
-        /* Region Selector */
         .region-selector-container {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .region-selector {
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(30, 36, 62, 0.7);
             backdrop-filter: blur(20px);
-            color: white;
-            font-size: 15px;
+            color: #c9d1d9;
+            font-size: 14px;
             cursor: pointer;
         }
 
         .region-selector option {
-            background: #2d2d5f;
-            color: white;
+            background: #2d3561;
+            color: #ffffff;
         }
 
-        /* Weather Scroll */
         .weather-scroll-container {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .weather-scroll {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             overflow-x: auto;
-            padding-bottom: 15px;
+            padding-bottom: 12px;
             scroll-behavior: smooth;
         }
 
@@ -144,118 +140,119 @@
         }
 
         .weather-scroll::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
         }
 
         .weather-scroll::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
         }
 
         .weather-card {
-            min-width: 180px;
-            padding: 20px;
-            border-radius: 16px;
+            min-width: 170px;
+            padding: 18px;
+            border-radius: 14px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .weather-city {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            color: #ffffff;
         }
 
         .weather-temp {
-            font-size: 42px;
+            font-size: 38px;
             font-weight: bold;
-            color: #00ff88;
-            margin: 10px 0;
+            color: #4ade80;
+            margin: 8px 0;
         }
 
         .weather-condition {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 12px;
+            font-size: 13px;
+            color: rgba(201, 209, 217, 0.6);
+            margin-bottom: 10px;
         }
 
         .weather-details {
             display: flex;
             justify-content: space-around;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.7);
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 12px;
+            color: rgba(201, 209, 217, 0.6);
         }
 
-        /* Sensor Cards */
         .sensor-section {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .sensor-card {
-            padding: 22px;
-            border-radius: 16px;
-            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 12px;
         }
 
         .sensor-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .sensor-name {
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            color: rgba(201, 209, 217, 0.7);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .sensor-badge {
-            padding: 6px 14px;
-            border-radius: 16px;
-            font-size: 12px;
+            padding: 5px 12px;
+            border-radius: 14px;
+            font-size: 11px;
             font-weight: 600;
         }
 
         .badge-optimal {
-            background: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
-            border: 1px solid rgba(0, 255, 136, 0.3);
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.3);
         }
 
         .badge-warning {
-            background: rgba(255, 152, 0, 0.2);
-            color: #ff9800;
-            border: 1px solid rgba(255, 152, 0, 0.3);
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
         }
 
         .badge-critical {
-            background: rgba(244, 67, 54, 0.2);
-            color: #f44336;
-            border: 1px solid rgba(244, 67, 54, 0.3);
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
         .sensor-value {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
-            color: #fff;
-            margin: 12px 0;
+            color: #ffffff;
+            margin: 10px 0;
         }
 
         .sensor-range {
-            font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 12px;
+            font-size: 12px;
+            color: rgba(201, 209, 217, 0.5);
+            margin-bottom: 10px;
         }
 
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
+            height: 5px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
         }
@@ -266,76 +263,85 @@
             transition: width 0.5s ease;
         }
 
-        .progress-optimal { background: linear-gradient(90deg, #00ff88, #00d9ff); }
-        .progress-warning { background: linear-gradient(90deg, #ff9800, #ffb142); }
-        .progress-critical { background: linear-gradient(90deg, #f44336, #ff1744); }
+        .progress-optimal { background: linear-gradient(90deg, #4ade80, #22d3ee); }
+        .progress-warning { background: linear-gradient(90deg, #fb923c, #f59e0b); }
+        .progress-critical { background: linear-gradient(90deg, #ef4444, #dc2626); }
 
-        /* Recommendations */
         .recommendations-section {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .recommendation-card {
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
         }
 
         .recommendation-title {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            color: #ffffff;
         }
 
         .recommendation-action {
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-left: 18px;
+            color: rgba(201, 209, 217, 0.6);
+            margin-left: 16px;
             display: block;
-            margin-top: 6px;
+            margin-top: 5px;
         }
 
-        /* Buttons */
         .button-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 18px;
         }
 
         .btn {
             flex: 1;
-            padding: 16px;
+            padding: 14px;
             border: none;
-            border-radius: 16px;
-            font-size: 15px;
+            border-radius: 14px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00ff88 0%, #00d9ff 100%);
-            color: #1e1e3f;
+            background: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+            color: #1a1f3a;
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(30, 36, 62, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #c9d1d9;
         }
 
         .loading {
             text-align: center;
             padding: 20px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(201, 209, 217, 0.5);
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .language-selector {
+                position: static;
+                margin: 0 auto 15px;
+                display: block;
+                width: fit-content;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <select class="language-selector" id="languageSelector" onchange="changeLanguage()">
+            <select class="language-selector" id="langSelect">
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
                 <option value="ta">தமிழ்</option>
@@ -345,80 +351,77 @@
                 <option value="bn">বাংলা</option>
                 <option value="gu">ગુજરાતી</option>
                 <option value="pa">ਪੰਜਾਬੀ</option>
+                <option value="ml">മലയാളം</option>
+                <option value="or">ଓଡ଼ିଆ</option>
             </select>
-            <h1><span id="appTitle">🌾 Mitti Mitra Robot</span></h1>
-            <p class="subtitle" id="subtitle">Smart Farming Assistant</p>
+            <h1 id="title">Mitti Mitra Robot</h1>
+            <p class="subtitle" id="sub">Smart Farming Assistant</p>
         </div>
 
         <div class="status-bar glass">
             <div class="status-indicator">
                 <div class="status-dot"></div>
-                <span id="statusText">Connected</span>
+                <span id="status">Connected</span>
             </div>
-            <div style="font-size: 13px; color: rgba(255,255,255,0.7);" id="lastUpdate">2 min ago</div>
+            <div style="font-size: 12px;" id="time">2 min ago</div>
         </div>
 
-        <!-- Weather with Region Selector -->
         <div class="weather-scroll-container">
-            <h3 class="section-title" id="weatherTitle">🌦️ Weather Forecast</h3>
+            <h3 class="section-title" id="wtitle">🌦️ Weather Forecast</h3>
             
             <div class="region-selector-container">
-                <select class="region-selector glass" id="regionSelector" onchange="changeRegion()">
-                    <option value="Delhi,IN">Delhi NCR</option>
-                    <option value="Panchkula,IN">Panchkula, Haryana</option>
-                    <option value="Chandigarh,IN">Chandigarh</option>
-                    <option value="Gurugram,IN">Gurugram, Haryana</option>
-                    <option value="Faridabad,IN">Faridabad, Haryana</option>
-                    <option value="Mumbai,IN">Mumbai, Maharashtra</option>
-                    <option value="Pune,IN">Pune, Maharashtra</option>
-                    <option value="Bangalore,IN">Bangalore, Karnataka</option>
-                    <option value="Chennai,IN">Chennai, Tamil Nadu</option>
-                    <option value="Hyderabad,IN">Hyderabad, Telangana</option>
-                    <option value="Kolkata,IN">Kolkata, West Bengal</option>
-                    <option value="Ahmedabad,IN">Ahmedabad, Gujarat</option>
-                    <option value="Jaipur,IN">Jaipur, Rajasthan</option>
-                    <option value="Lucknow,IN">Lucknow, Uttar Pradesh</option>
-                    <option value="Kanpur,IN">Kanpur, Uttar Pradesh</option>
-                    <option value="Patna,IN">Patna, Bihar</option>
-                    <option value="Bhubaneswar,IN">Bhubaneswar, Odisha</option>
-                    <option value="Ranchi,IN">Ranchi, Jharkhand</option>
-                    <option value="Raipur,IN">Raipur, Chhattisgarh</option>
-                    <option value="Guwahati,IN">Guwahati, Assam</option>
-                    <option value="Dehradun,IN">Dehradun, Uttarakhand</option>
-                    <option value="Shimla,IN">Shimla, Himachal Pradesh</option>
-                    <option value="Srinagar,IN">Srinagar, J&K</option>
-                    <option value="Thiruvananthapuram,IN">Thiruvananthapuram, Kerala</option>
-                    <option value="Kochi,IN">Kochi, Kerala</option>
-                    <option value="Visakhapatnam,IN">Visakhapatnam, Andhra Pradesh</option>
-                    <option value="Vijayawada,IN">Vijayawada, Andhra Pradesh</option>
-                    <option value="Coimbatore,IN">Coimbatore, Tamil Nadu</option>
-                    <option value="Madurai,IN">Madurai, Tamil Nadu</option>
-                    <option value="Mysore,IN">Mysore, Karnataka</option>
-                    <option value="Nagpur,IN">Nagpur, Maharashtra</option>
-                    <option value="Indore,IN">Indore, Madhya Pradesh</option>
-                    <option value="Bhopal,IN">Bhopal, Madhya Pradesh</option>
-                    <option value="Surat,IN">Surat, Gujarat</option>
-                    <option value="Ludhiana,IN">Ludhiana, Punjab</option>
-                    <option value="Amritsar,IN">Amritsar, Punjab</option>
+                <select class="region-selector glass" id="regionSelect">
+                    <optgroup label="Chandigarh Tricity">
+                        <option value="Panchkula,IN">Panchkula, Haryana</option>
+                        <option value="Chandigarh,IN">Chandigarh</option>
+                        <option value="Mohali,IN">Mohali, Punjab</option>
+                    </optgroup>
+                    <optgroup label="Haryana">
+                        <option value="Gurugram,IN">Gurugram</option>
+                        <option value="Faridabad,IN">Faridabad</option>
+                        <option value="Ambala,IN">Ambala</option>
+                        <option value="Karnal,IN">Karnal</option>
+                        <option value="Panipat,IN">Panipat</option>
+                    </optgroup>
+                    <optgroup label="Punjab">
+                        <option value="Ludhiana,IN">Ludhiana</option>
+                        <option value="Amritsar,IN">Amritsar</option>
+                        <option value="Jalandhar,IN">Jalandhar</option>
+                        <option value="Patiala,IN">Patiala</option>
+                    </optgroup>
+                    <optgroup label="Delhi NCR">
+                        <option value="Delhi,IN">Delhi</option>
+                        <option value="Noida,IN">Noida</option>
+                        <option value="Ghaziabad,IN">Ghaziabad</option>
+                    </optgroup>
+                    <optgroup label="Major Cities">
+                        <option value="Mumbai,IN">Mumbai</option>
+                        <option value="Bangalore,IN">Bangalore</option>
+                        <option value="Chennai,IN">Chennai</option>
+                        <option value="Kolkata,IN">Kolkata</option>
+                        <option value="Hyderabad,IN">Hyderabad</option>
+                        <option value="Pune,IN">Pune</option>
+                        <option value="Ahmedabad,IN">Ahmedabad</option>
+                        <option value="Jaipur,IN">Jaipur</option>
+                    </optgroup>
                 </select>
             </div>
             
-            <div class="weather-scroll" id="weatherScroll">
-                <div class="loading">Loading weather data...</div>
+            <div class="weather-scroll" id="weatherBox">
+                <div class="loading">Loading weather...</div>
             </div>
         </div>
 
-        <!-- Sensor Readings -->
         <div class="sensor-section">
-            <h3 class="section-title" id="sensorTitle">📊 Sensor Readings</h3>
+            <h3 class="section-title" id="stitle">📊 Sensor Readings</h3>
             
             <div class="sensor-card glass">
                 <div class="sensor-header">
-                    <div class="sensor-name"><span>🌡️</span> <span id="phLabel">pH Level</span></div>
-                    <span class="sensor-badge badge-optimal"><span id="optimalText">Optimal</span></span>
+                    <div class="sensor-name"><span>🌡️</span> <span id="ph">pH Level</span></div>
+                    <span class="sensor-badge badge-optimal"><span id="opt">Optimal</span></span>
                 </div>
                 <div class="sensor-value">6.5</div>
-                <div class="sensor-range"><span id="rangeText">Range:</span> 6.0-7.5</div>
+                <div class="sensor-range"><span id="r1">Range:</span> 6.0-7.5</div>
                 <div class="progress-bar">
                     <div class="progress-fill progress-optimal" style="width: 87%;"></div>
                 </div>
@@ -426,11 +429,11 @@
 
             <div class="sensor-card glass">
                 <div class="sensor-header">
-                    <div class="sensor-name"><span>💧</span> <span id="moistureLabel">Moisture</span></div>
-                    <span class="sensor-badge badge-warning"><span id="lowText">Low</span></span>
+                    <div class="sensor-name"><span>💧</span> <span id="moist">Moisture</span></div>
+                    <span class="sensor-badge badge-warning"><span id="low">Low</span></span>
                 </div>
                 <div class="sensor-value">45%</div>
-                <div class="sensor-range"><span id="rangeText2">Range:</span> 60-80% optimal</div>
+                <div class="sensor-range"><span id="r2">Range:</span> 60-80% optimal</div>
                 <div class="progress-bar">
                     <div class="progress-fill progress-warning" style="width: 45%;"></div>
                 </div>
@@ -438,10 +441,10 @@
 
             <div class="sensor-card glass">
                 <div class="sensor-header">
-                    <div class="sensor-name"><span>🌱</span> <span id="nitrogenLabel">Nitrogen</span></div>
-                    <span class="sensor-badge badge-critical"><span id="criticalText">Critical</span></span>
+                    <div class="sensor-name"><span>🌱</span> <span id="nitro">Nitrogen</span></div>
+                    <span class="sensor-badge badge-critical"><span id="crit">Critical</span></span>
                 </div>
-                <div class="sensor-value" id="lowValue">Low</div>
+                <div class="sensor-value" id="lval">Low</div>
                 <div class="sensor-range">Green Index: 95/255</div>
                 <div class="progress-bar">
                     <div class="progress-fill progress-critical" style="width: 30%;"></div>
@@ -449,9 +452,8 @@
             </div>
         </div>
 
-        <!-- Recommendations -->
         <div class="recommendations-section">
-            <h3 class="section-title" id="recommendTitle">💡 Recommendations</h3>
+            <h3 class="section-title" id="rtitle">💡 Recommendations</h3>
             
             <div class="recommendation-card glass">
                 <div class="recommendation-title" id="rec1">⚠️ Soil is dry</div>
@@ -463,7 +465,6 @@
                 <div class="recommendation-title" id="rec2">🔴 Nitrogen deficiency</div>
                 <span class="recommendation-action" id="rec2a">→ Add Neem Cake: 50g/plant</span>
                 <span class="recommendation-action" id="rec2b">→ Or Vermicompost: 200g</span>
-                <span class="recommendation-action" id="rec2c">→ Jeevamrit spray weekly</span>
             </div>
 
             <div class="recommendation-card glass">
@@ -472,101 +473,112 @@
             </div>
         </div>
 
-        <!-- Buttons -->
         <div class="button-group">
-            <button class="btn btn-primary" onclick="refreshData()">
-                <span>🔄</span>
-                <span id="refreshBtn">Refresh</span>
+            <button class="btn btn-primary" onclick="refresh()">
+                🔄 <span id="rbtn">Refresh</span>
             </button>
-            <button class="btn btn-secondary" onclick="showHistory()">
-                <span>📊</span>
-                <span id="historyBtn">History</span>
+            <button class="btn btn-secondary" onclick="history()">
+                📊 <span id="hbtn">History</span>
             </button>
         </div>
     </div>
 
     <script>
-        const API_KEY = '3045dd712ffe6e702e3245525ac7fa38'; // OpenWeatherMap API key
+        const KEY = '3045dd712ffe6e702e3245525ac7fa38';
         
-        const translations = {
-            en: {
-                appTitle: '🌾 Mitti Mitra Robot',
-                subtitle: 'Smart Farming Assistant',
-                statusText: 'Connected',
-                weatherTitle: '🌦️ Weather Forecast',
-                sensorTitle: '📊 Sensor Readings',
-                recommendTitle: '💡 Recommendations',
-                phLabel: 'pH Level',
-                moistureLabel: 'Moisture',
-                nitrogenLabel: 'Nitrogen',
-                optimalText: 'Optimal',
-                lowText: 'Low',
-                criticalText: 'Critical',
-                lowValue: 'Low',
-                rangeText: 'Range:',
-                rangeText2: 'Range:',
-                refreshBtn: 'Refresh',
-                historyBtn: 'History',
-                rec1: '⚠️ Soil is dry',
-                rec1a: '→ Water immediately',
-                rec1b: '→ Apply mulch layer',
-                rec2: '🔴 Nitrogen deficiency',
-                rec2a: '→ Add Neem Cake: 50g/plant',
-                rec2b: '→ Or Vermicompost: 200g',
-                rec2c: '→ Jeevamrit spray weekly',
-                rec3: '✅ pH is optimal',
-                rec3a: '→ No action needed'
-            },
-            hi: {
-                appTitle: '🌾 मिट्टी मित्र रोबोट',
-                subtitle: 'स्मार्ट खेती सहायक',
-                statusText: 'जुड़ा हुआ',
-                weatherTitle: '🌦️ मौसम पूर्वानुमान',
-                sensorTitle: '📊 सेंसर रीडिंग',
-                recommendTitle: '💡 सिफारिशें',
-                phLabel: 'पीएच स्तर',
-                moistureLabel: 'नमी',
-                nitrogenLabel: 'नाइट्रोजन',
-                optimalText: 'इष्टतम',
-                lowText: 'कम',
-                criticalText: 'गंभीर',
-                lowValue: 'कम',
-                rangeText: 'सीमा:',
-                rangeText2: 'सीमा:',
-                refreshBtn: 'रीफ्रेश',
-                historyBtn: 'इतिहास'
-            }
+        const lang = {
+            en: {title:'Mitti Mitra Robot',sub:'Smart Farming Assistant',status:'Connected',wtitle:'🌦️ Weather Forecast',stitle:'📊 Sensor Readings',rtitle:'💡 Recommendations',ph:'pH Level',moist:'Moisture',nitro:'Nitrogen',opt:'Optimal',low:'Low',crit:'Critical',lval:'Low',r1:'Range:',r2:'Range:',rbtn:'Refresh',hbtn:'History',rec1:'⚠️ Soil is dry',rec1a:'→ Water immediately',rec1b:'→ Apply mulch layer',rec2:'🔴 Nitrogen deficiency',rec2a:'→ Add Neem Cake: 50g/plant',rec2b:'→ Or Vermicompost: 200g',rec3:'✅ pH is optimal',rec3a:'→ No action needed'},
+            hi: {title:'मिट्टी मित्र रोबोट',sub:'स्मार्ट खेती सहायक',status:'जुड़ा',wtitle:'🌦️ मौसम',stitle:'📊 सेंसर',rtitle:'💡 सिफारिशें',ph:'पीएच',moist:'नमी',nitro:'नाइट्रोजन',opt:'बढ़िया',low:'कम',crit:'गंभीर',lval:'कम',r1:'सीमा:',r2:'सीमा:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'⚠️ मिट्टी सूखी',rec1a:'→ तुरंत पानी दें',rec1b:'→ गीली घास लगाएं',rec2:'🔴 नाइट्रोजन कमी',rec2a:'→ नीम खली डालें',rec2b:'→ वर्मीकम्पोस्ट दें',rec3:'✅ पीएच ठीक है',rec3a:'→ कुछ नहीं'},
+            ta: {title:'மிட்டி மித்ரா',sub:'விவசாய உதவி',status:'இணைப்பு',wtitle:'🌦️ வானிலை',stitle:'📊 சென்சார்',rtitle:'💡 பரிந்துரை',ph:'pH',moist:'ஈரம்',nitro:'நைட்ரஜன்',opt:'நல்லது',low:'குறைவு',crit:'அவசரம்',lval:'குறைவு',r1:'வரம்பு:',r2:'வரம்பு:',rbtn:'புதுப்பி',hbtn:'வரலாறு'},
+            te: {title:'మిట్టి మిత్ర',sub:'వ్యవసాయం',status:'కనెక్ట్',wtitle:'🌦️ వాతావరణం',stitle:'📊 సెన్సార్',rtitle:'💡 సూచనలు',ph:'pH',moist:'తేమ',nitro:'నైట్రోజన్',opt:'మంచి',low:'తక్కువ',crit:'తీవ్రం',lval:'తక్కువ',r1:'పరిధి:',r2:'పరిధి:',rbtn:'రిఫ్రెష్',hbtn:'చరిత్ర'},
+            mr: {title:'मिट्टी मित्र',sub:'शेती मदत',status:'जोडले',wtitle:'🌦️ हवामान',stitle:'📊 सेन्सर',rtitle:'💡 सूचना',ph:'pH',moist:'ओलावा',nitro:'नायट्रोजन',opt:'चांगले',low:'कमी',crit:'गंभीर',lval:'कमी',r1:'श्रेणी:',r2:'श्रेणी:',rbtn:'रीफ्रेश',hbtn:'इतिहास'},
+            kn: {title:'ಮಿಟ್ಟಿ ಮಿತ್ರ',sub:'ಕೃಷಿ',status:'ಸಂಪರ್ಕ',wtitle:'🌦️ ಹವಾಮಾನ',stitle:'📊 ಸೆನ್ಸಾರ್',rtitle:'💡 ಸೂಚನೆ',ph:'pH',moist:'ತೇವಾಂಶ',nitro:'ನೈಟ್ರೋಜನ್',opt:'ಉತ್ತಮ',low:'ಕಡಿಮೆ',crit:'ತೀವ್ರ',lval:'ಕಡಿಮೆ',r1:'ವ್ಯಾಪ್ತಿ:',r2:'ವ್ಯಾಪ್ತಿ:',rbtn:'ರಿಫ್ರೆಶ್',hbtn:'ಇತಿಹಾಸ'},
+            bn: {title:'মিট্টি মিত্র',sub:'কৃষি সাহায্য',status:'সংযুক্ত',wtitle:'🌦️ আবহাওয়া',stitle:'📊 সেন্সর',rtitle:'💡 পরামর্শ',ph:'pH',moist:'আর্দ্রতা',nitro:'নাইট্রোজেন',opt:'ভাল',low:'কম',crit:'জরুরি',lval:'কম',r1:'সীমা:',r2:'সীমা:',rbtn:'রিফ্রেশ',hbtn:'ইতিহাস'},
+            gu: {title:'મિટ્ટી મિત્ર',sub:'ખેતી મદદ',status:'જોડાયું',wtitle:'🌦️ હવામાન',stitle:'📊 સેન્સર',rtitle:'💡 સલાહ',ph:'pH',moist:'ભેજ',nitro:'નાઈટ્રોજન',opt:'સારું',low:'ઓછું',crit:'ગંભીર',lval:'ઓછું',r1:'શ્રેણી:',r2:'શ્રેણી:',rbtn:'રિફ્રેશ',hbtn:'ઇતિહાસ'},
+            pa: {title:'ਮਿੱਟੀ ਮਿੱਤਰ',sub:'ਖੇਤੀ ਸਹਾਇਕ',status:'ਜੁੜਿਆ',wtitle:'🌦️ ਮੌਸਮ',stitle:'📊 ਸੈਂਸਰ',rtitle:'💡 ਸਲਾਹ',ph:'pH',moist:'ਨਮੀ',nitro:'ਨਾਈਟ੍ਰੋਜਨ',opt:'ਵਧੀਆ',low:'ਘੱਟ',crit:'ਗੰਭੀਰ',lval:'ਘੱਟ',r1:'ਰੇਂਜ:',r2:'ਰੇਂਜ:',rbtn:'ਤਾਜ਼ਾ',hbtn:'ਇਤਿਹਾਸ'},
+            ml: {title:'മിട്ടി മിത്ര',sub:'കൃഷി സഹായി',status:'കണക്റ്റഡ്',wtitle:'🌦️ കാലാവസ്ഥ',stitle:'📊 സെൻസർ',rtitle:'💡 നിർദ്ദേശം',ph:'pH',moist:'ഈർപ്പം',nitro:'നൈട്രജൻ',opt:'നല്ലത്',low:'കുറവ്',crit:'ഗുരുതരം',lval:'കുറവ്',r1:'പരിധി:',r2:'പരിധി:',rbtn:'റിഫ്രഷ്',hbtn:'ചരിത്രം'},
+            or: {title:'ମିଟି ମିତ୍ର',sub:'କୃଷି ସହାୟକ',status:'ସଂଯୁକ୍ତ',wtitle:'🌦️ ପାଣିପାଗ',stitle:'📊 ସେନ୍ସର',rtitle:'💡 ପରାମର୍ଶ',ph:'pH',moist:'ଆର୍ଦ୍ରତା',nitro:'ନାଇଟ୍ରୋଜେନ',opt:'ଉତ୍ତମ',low:'କମ୍',crit:'ଗୁରୁତର',lval:'କମ୍',r1:'ସୀମା:',r2:'ସୀମା:',rbtn:'ରିଫ୍ରେଶ',hbtn:'ଇତିହାସ'}
         };
 
-        async function fetchWeatherForRegion(location) {
+        async function getWeather(city) {
             try {
-                const response = await fetch(
-                    `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`
-                );
-                
-                if (!response.ok) throw new Error('Weather data fetch failed');
-                
-                const data = await response.json();
-                
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${KEY}&units=metric`);
+                const d = await res.json();
                 return {
-                    city: data.name,
-                    temp: Math.round(data.main.temp),
-                    condition: data.weather[0].main,
-                    humidity: data.main.humidity,
-                    wind: Math.round(data.wind.speed * 3.6) // Convert m/s to km/h
+                    name: d.name,
+                    temp: Math.round(d.main.temp),
+                    desc: d.weather[0].main,
+                    hum: d.main.humidity,
+                    wind: Math.round(d.wind.speed * 3.6)
                 };
-            } catch (error) {
-                console.error('Error fetching weather:', error);
+            } catch(e) {
                 return null;
             }
         }
 
-        async function changeRegion() {
-            const selector = document.getElementById('regionSelector');
-            const location = selector.value;
-            const container = document.getElementById('weatherScroll');
+        function nearby(c) {
+            const map = {
+                'Panchkula,IN': ['Panchkula,IN','Chandigarh,IN','Mohali,IN','Ambala,IN'],
+                'Chandigarh,IN': ['Chandigarh,IN','Panchkula,IN','Mohali,IN'],
+                'Delhi,IN': ['Delhi,IN','Noida,IN','Gurugram,IN','Ghaziabad,IN'],
+                'Mumbai,IN': ['Mumbai,IN','Pune,IN','Nashik,IN'],
+                'Bangalore,IN': ['Bangalore,IN','Mysore,IN','Mangalore,IN'],
+                'Chennai,IN': ['Chennai,IN','Coimbatore,IN','Madurai,IN']
+            };
+            return map[c] || [c];
+        }
+
+        async function loadWeather() {
+            const box = document.getElementById('weatherBox');
+            const city = document.getElementById('regionSelect').value;
+            box.innerHTML = '<div class="loading">Loading...</div>';
             
-            container.innerHTML = '<div class="loading">Loading weather data...</div>';
+            const cities = nearby(city);
+            const data = await Promise.all(cities.map(c => getWeather(c)));
             
-            // Fetch weather for selected region and nearby cities
- 
+            box.innerHTML = '';
+            data.filter(d => d).forEach(w => {
+                box.innerHTML += `
+                    <div class="weather-card glass">
+                        <div class="weather-city">${w.name}</div>
+                        <div class="weather-temp">${w.temp}°C</div>
+                        <div class="weather-condition">${w.desc}</div>
+                        <div class="weather-details">
+                            <div>💧 ${w.hum}%</div>
+                            <div>🌬️ ${w.wind}km/h</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function changeLang() {
+            const l = document.getElementById('langSelect').value;
+            const t = lang[l];
+            Object.keys(t).forEach(k => {
+                const el = document.getElementById(k);
+                if(el) el.textContent = t[k];
+            });
+        }
+
+        function refresh() {
+            loadWeather();
+            document.getElementById('langSelect').addEventListener('change', changeLang);
+        document.getElementById('regionSelect').addEventListener('change', loadWeather);
+        
+        loadWeather();
+        
+        setInterval(() => {
+            const m = Math.floor(Math.random() * 5) + 1;
+            document.getElementById('time').textContent = `${m} min ago`;
+        }, 60000);
+    </script>
+</body>
+</html>time').textContent = 'Just now';
+        }
+
+        function history() {
+            alert('📊 Opening history...');
+        }
+
+        document.getElementById('
