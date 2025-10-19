@@ -502,28 +502,15 @@
 
         async function getWeather(city) {
             try {
-                const res = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${KEY}&units=metric`);
+                const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${KEY}&units=metric`);
                 if (!res.ok) throw new Error('Weather fetch failed');
                 const d = await res.json();
-                
-                const forecasts = {};
-                d.list.forEach(item => {
-                    const date = new Date(item.dt * 1000).toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'});
-                    if (!forecasts[date]) {
-                        forecasts[date] = {
-                            date: date,
-                            temps: [],
-                            desc: item.weather[0].main,
-                            hum: item.main.humidity,
-                            wind: Math.round(item.wind.speed * 3.6)
-                        };
-                    }
-                    forecasts[date].temps.push(Math.round(item.main.temp));
-                });
-                
                 return {
-                    name: d.city.name,
-                    forecasts: Object.values(forecasts).slice(0, 7)
+                    name: d.name,
+                    temp: Math.round(d.main.temp),
+                    desc: d.weather[0].main,
+                    hum: d.main.humidity,
+                    wind: Math.round(d.wind.speed * 3.6)
                 };
             } catch(e) {
                 console.error('Weather error:', e);
@@ -580,7 +567,13 @@
             const t = lang[l];
             Object.keys(t).forEach(k => {
                 const el = document.getElementById(k);
-                if(el) el.textContent = t[k];
+                if(el) {
+                    if (k === 'sub') {
+                        el.textContent = t[k];
+                    } else {
+                        el.textContent = t[k];
+                    }
+                }
             });
         }
 
