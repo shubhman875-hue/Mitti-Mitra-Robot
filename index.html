@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krishi Mitra - Smart Farming Dashboard</title>
+    <title>Mitti Mitra Robot - Smart Farming Assistant</title>
     <style>
         * {
             margin: 0;
@@ -12,58 +12,61 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(180deg, #1e1e3f 0%, #2d2d5f 50%, #1a1a3e 100%);
             min-height: 100vh;
             color: #fff;
             padding: 20px;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            position: relative;
         }
 
         .header h1 {
             font-size: 28px;
             margin-bottom: 8px;
             color: #fff;
+            font-weight: 600;
         }
 
         .subtitle {
-            color: #a0a0a0;
-            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
         }
 
         .language-selector {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
             border-radius: 20px;
             color: white;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-        }
-
-        .language-selector:hover {
-            background: rgba(255, 255, 255, 0.15);
         }
 
         .status-bar {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 15px;
+            padding: 16px 20px;
+            border-radius: 16px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
@@ -73,13 +76,13 @@
         .status-indicator {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
+            gap: 10px;
+            font-size: 15px;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #00ff88;
             box-shadow: 0 0 10px #00ff88;
@@ -92,14 +95,38 @@
         }
 
         .section-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 15px;
             color: #fff;
-            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        /* Weather Scroll Section */
+        /* Region Selector */
+        .region-selector-container {
+            margin-bottom: 15px;
+        }
+
+        .region-selector {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .region-selector option {
+            background: #2d2d5f;
+            color: white;
+        }
+
+        /* Weather Scroll */
         .weather-scroll-container {
             margin-bottom: 25px;
         }
@@ -110,11 +137,10 @@
             overflow-x: auto;
             padding-bottom: 15px;
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
         }
 
         .weather-scroll::-webkit-scrollbar {
-            height: 6px;
+            height: 4px;
         }
 
         .weather-scroll::-webkit-scrollbar-track {
@@ -127,47 +153,39 @@
             border-radius: 10px;
         }
 
-        .weather-scroll::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
         .weather-card {
-            min-width: 140px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
+            min-width: 180px;
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
-            backdrop-filter: blur(10px);
         }
 
         .weather-city {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #fff;
+            margin-bottom: 10px;
         }
 
         .weather-temp {
-            font-size: 32px;
+            font-size: 42px;
             font-weight: bold;
             color: #00ff88;
-            margin: 8px 0;
+            margin: 10px 0;
         }
 
         .weather-condition {
-            font-size: 12px;
-            color: #a0a0a0;
-            margin-bottom: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 12px;
         }
 
         .weather-details {
             display: flex;
             justify-content: space-around;
-            padding-top: 10px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 11px;
-            color: #a0a0a0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Sensor Cards */
@@ -176,33 +194,30 @@
         }
 
         .sensor-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 22px;
+            border-radius: 16px;
             margin-bottom: 15px;
-            backdrop-filter: blur(10px);
         }
 
         .sensor-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .sensor-name {
-            font-size: 14px;
-            color: #a0a0a0;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .sensor-badge {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 12px;
             font-weight: 600;
         }
 
@@ -213,28 +228,28 @@
         }
 
         .badge-warning {
-            background: rgba(255, 177, 66, 0.2);
-            color: #ffb142;
-            border: 1px solid rgba(255, 177, 66, 0.3);
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.3);
         }
 
         .badge-critical {
-            background: rgba(255, 82, 82, 0.2);
-            color: #ff5252;
-            border: 1px solid rgba(255, 82, 82, 0.3);
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
         }
 
         .sensor-value {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: bold;
             color: #fff;
-            margin: 10px 0;
+            margin: 12px 0;
         }
 
         .sensor-range {
-            font-size: 12px;
-            color: #a0a0a0;
-            margin-bottom: 10px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 12px;
         }
 
         .progress-bar {
@@ -252,8 +267,8 @@
         }
 
         .progress-optimal { background: linear-gradient(90deg, #00ff88, #00d9ff); }
-        .progress-warning { background: linear-gradient(90deg, #ffb142, #ff9100); }
-        .progress-critical { background: linear-gradient(90deg, #ff5252, #ff1744); }
+        .progress-warning { background: linear-gradient(90deg, #ff9800, #ffb142); }
+        .progress-critical { background: linear-gradient(90deg, #f44336, #ff1744); }
 
         /* Recommendations */
         .recommendations-section {
@@ -261,118 +276,135 @@
         }
 
         .recommendation-card {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
+            padding: 18px;
+            border-radius: 16px;
             margin-bottom: 12px;
-            backdrop-filter: blur(10px);
         }
 
         .recommendation-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 8px;
-            color: #fff;
+            margin-bottom: 10px;
         }
 
         .recommendation-action {
             font-size: 13px;
-            color: #a0a0a0;
-            margin-left: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-left: 18px;
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         /* Buttons */
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 20px;
         }
 
         .btn {
             flex: 1;
-            padding: 15px;
+            padding: 16px;
             border: none;
-            border-radius: 15px;
-            font-size: 14px;
+            border-radius: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #00ff88, #00d9ff);
-            color: #1a1a2e;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            background: linear-gradient(135deg, #00ff88 0%, #00d9ff 100%);
+            color: #1e1e3f;
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             color: #fff;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .footer {
+        .loading {
             text-align: center;
             padding: 20px;
-            font-size: 12px;
-            color: #a0a0a0;
-        }
-
-        @media (max-width: 600px) {
-            .language-selector {
-                top: 10px;
-                right: 10px;
-            }
+            color: rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
 <body>
-    <select class="language-selector" id="languageSelector" onchange="changeLanguage()">
-        <option value="en">English</option>
-        <option value="hi">हिंदी</option>
-        <option value="ta">தமிழ்</option>
-        <option value="te">తెలుగు</option>
-        <option value="mr">मराठी</option>
-        <option value="kn">ಕನ್ನಡ</option>
-        <option value="bn">বাংলা</option>
-        <option value="gu">ગુજરાતી</option>
-        <option value="pa">ਪੰਜਾਬੀ</option>
-    </select>
-
     <div class="container">
         <div class="header">
-            <h1><span id="appTitle">Mitti Mitra Robot</span></h1>
+            <select class="language-selector" id="languageSelector" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="ta">தமிழ்</option>
+                <option value="te">తెలుగు</option>
+                <option value="mr">मराठी</option>
+                <option value="kn">ಕನ್ನಡ</option>
+                <option value="bn">বাংলা</option>
+                <option value="gu">ગુજરાતી</option>
+                <option value="pa">ਪੰਜਾਬੀ</option>
+            </select>
+            <h1><span id="appTitle">🌾 Mitti Mitra Robot</span></h1>
             <p class="subtitle" id="subtitle">Smart Farming Assistant</p>
         </div>
 
-        <div class="status-bar">
+        <div class="status-bar glass">
             <div class="status-indicator">
                 <div class="status-dot"></div>
                 <span id="statusText">Connected</span>
             </div>
-            <div style="font-size: 12px; color: #a0a0a0;" id="lastUpdate">2 min ago</div>
+            <div style="font-size: 13px; color: rgba(255,255,255,0.7);" id="lastUpdate">2 min ago</div>
         </div>
 
-        <!-- Weather Scroll -->
+        <!-- Weather with Region Selector -->
         <div class="weather-scroll-container">
             <h3 class="section-title" id="weatherTitle">🌦️ Weather Forecast</h3>
+            
+            <div class="region-selector-container">
+                <select class="region-selector glass" id="regionSelector" onchange="changeRegion()">
+                    <option value="Delhi,IN">Delhi NCR</option>
+                    <option value="Panchkula,IN">Panchkula, Haryana</option>
+                    <option value="Chandigarh,IN">Chandigarh</option>
+                    <option value="Gurugram,IN">Gurugram, Haryana</option>
+                    <option value="Faridabad,IN">Faridabad, Haryana</option>
+                    <option value="Mumbai,IN">Mumbai, Maharashtra</option>
+                    <option value="Pune,IN">Pune, Maharashtra</option>
+                    <option value="Bangalore,IN">Bangalore, Karnataka</option>
+                    <option value="Chennai,IN">Chennai, Tamil Nadu</option>
+                    <option value="Hyderabad,IN">Hyderabad, Telangana</option>
+                    <option value="Kolkata,IN">Kolkata, West Bengal</option>
+                    <option value="Ahmedabad,IN">Ahmedabad, Gujarat</option>
+                    <option value="Jaipur,IN">Jaipur, Rajasthan</option>
+                    <option value="Lucknow,IN">Lucknow, Uttar Pradesh</option>
+                    <option value="Kanpur,IN">Kanpur, Uttar Pradesh</option>
+                    <option value="Patna,IN">Patna, Bihar</option>
+                    <option value="Bhubaneswar,IN">Bhubaneswar, Odisha</option>
+                    <option value="Ranchi,IN">Ranchi, Jharkhand</option>
+                    <option value="Raipur,IN">Raipur, Chhattisgarh</option>
+                    <option value="Guwahati,IN">Guwahati, Assam</option>
+                    <option value="Dehradun,IN">Dehradun, Uttarakhand</option>
+                    <option value="Shimla,IN">Shimla, Himachal Pradesh</option>
+                    <option value="Srinagar,IN">Srinagar, J&K</option>
+                    <option value="Thiruvananthapuram,IN">Thiruvananthapuram, Kerala</option>
+                    <option value="Kochi,IN">Kochi, Kerala</option>
+                    <option value="Visakhapatnam,IN">Visakhapatnam, Andhra Pradesh</option>
+                    <option value="Vijayawada,IN">Vijayawada, Andhra Pradesh</option>
+                    <option value="Coimbatore,IN">Coimbatore, Tamil Nadu</option>
+                    <option value="Madurai,IN">Madurai, Tamil Nadu</option>
+                    <option value="Mysore,IN">Mysore, Karnataka</option>
+                    <option value="Nagpur,IN">Nagpur, Maharashtra</option>
+                    <option value="Indore,IN">Indore, Madhya Pradesh</option>
+                    <option value="Bhopal,IN">Bhopal, Madhya Pradesh</option>
+                    <option value="Surat,IN">Surat, Gujarat</option>
+                    <option value="Ludhiana,IN">Ludhiana, Punjab</option>
+                    <option value="Amritsar,IN">Amritsar, Punjab</option>
+                </select>
+            </div>
+            
             <div class="weather-scroll" id="weatherScroll">
-                <!-- Weather cards populated by JS -->
+                <div class="loading">Loading weather data...</div>
             </div>
         </div>
 
@@ -380,7 +412,7 @@
         <div class="sensor-section">
             <h3 class="section-title" id="sensorTitle">📊 Sensor Readings</h3>
             
-            <div class="sensor-card">
+            <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>🌡️</span> <span id="phLabel">pH Level</span></div>
                     <span class="sensor-badge badge-optimal"><span id="optimalText">Optimal</span></span>
@@ -392,7 +424,7 @@
                 </div>
             </div>
 
-            <div class="sensor-card">
+            <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>💧</span> <span id="moistureLabel">Moisture</span></div>
                     <span class="sensor-badge badge-warning"><span id="lowText">Low</span></span>
@@ -404,7 +436,7 @@
                 </div>
             </div>
 
-            <div class="sensor-card">
+            <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>🌱</span> <span id="nitrogenLabel">Nitrogen</span></div>
                     <span class="sensor-badge badge-critical"><span id="criticalText">Critical</span></span>
@@ -421,20 +453,20 @@
         <div class="recommendations-section">
             <h3 class="section-title" id="recommendTitle">💡 Recommendations</h3>
             
-            <div class="recommendation-card">
+            <div class="recommendation-card glass">
                 <div class="recommendation-title" id="rec1">⚠️ Soil is dry</div>
                 <span class="recommendation-action" id="rec1a">→ Water immediately</span>
                 <span class="recommendation-action" id="rec1b">→ Apply mulch layer</span>
             </div>
 
-            <div class="recommendation-card">
+            <div class="recommendation-card glass">
                 <div class="recommendation-title" id="rec2">🔴 Nitrogen deficiency</div>
                 <span class="recommendation-action" id="rec2a">→ Add Neem Cake: 50g/plant</span>
                 <span class="recommendation-action" id="rec2b">→ Or Vermicompost: 200g</span>
                 <span class="recommendation-action" id="rec2c">→ Jeevamrit spray weekly</span>
             </div>
 
-            <div class="recommendation-card">
+            <div class="recommendation-card glass">
                 <div class="recommendation-title" id="rec3">✅ pH is optimal</div>
                 <span class="recommendation-action" id="rec3a">→ No action needed</span>
             </div>
@@ -451,29 +483,14 @@
                 <span id="historyBtn">History</span>
             </button>
         </div>
-
-        <div class="footer">
-            Powered by Krishi Mitra IoT | © 2024
-        </div>
     </div>
 
     <script>
-        const weatherData = {
-            'Delhi': { temp: 32, condition: 'Sunny', humidity: 45, wind: 12 },
-            'Mumbai': { temp: 29, condition: 'Humid', humidity: 78, wind: 18 },
-            'Kolkata': { temp: 31, condition: 'Cloudy', humidity: 68, wind: 15 },
-            'Chennai': { temp: 34, condition: 'Hot', humidity: 72, wind: 14 },
-            'Bangalore': { temp: 26, condition: 'Pleasant', humidity: 55, wind: 10 },
-            'Hyderabad': { temp: 30, condition: 'Clear', humidity: 52, wind: 11 },
-            'Pune': { temp: 28, condition: 'Rainy', humidity: 62, wind: 13 },
-            'Jaipur': { temp: 35, condition: 'Very Hot', humidity: 38, wind: 16 },
-            'Ahmedabad': { temp: 33, condition: 'Dry', humidity: 42, wind: 14 },
-            'Lucknow': { temp: 31, condition: 'Warm', humidity: 58, wind: 11 }
-        };
-
+        const API_KEY = '3045dd712ffe6e702e3245525ac7fa38'; // OpenWeatherMap API key
+        
         const translations = {
             en: {
-                appTitle: '🌾 KRISHI MITRA',
+                appTitle: '🌾 Mitti Mitra Robot',
                 subtitle: 'Smart Farming Assistant',
                 statusText: 'Connected',
                 weatherTitle: '🌦️ Weather Forecast',
@@ -501,7 +518,7 @@
                 rec3a: '→ No action needed'
             },
             hi: {
-                appTitle: '🌾 कृषि मित्र',
+                appTitle: '🌾 मिट्टी मित्र रोबोट',
                 subtitle: 'स्मार्ट खेती सहायक',
                 statusText: 'जुड़ा हुआ',
                 weatherTitle: '🌦️ मौसम पूर्वानुमान',
@@ -517,266 +534,39 @@
                 rangeText: 'सीमा:',
                 rangeText2: 'सीमा:',
                 refreshBtn: 'रीफ्रेश',
-                historyBtn: 'इतिहास',
-                rec1: '⚠️ मिट्टी सूखी है',
-                rec1a: '→ तुरंत पानी दें',
-                rec1b: '→ गीली घास लगाएं',
-                rec2: '🔴 नाइट्रोजन की कमी',
-                rec2a: '→ नीम खली: 50ग्रा/पौधा',
-                rec2b: '→ वर्मीकम्पोस्ट: 200ग्रा',
-                rec2c: '→ जीवामृत स्प्रे साप्ताहिक',
-                rec3: '✅ पीएच इष्टतम है',
-                rec3a: '→ कोई कार्रवाई नहीं'
-            },
-            ta: {
-                appTitle: '🌾 கிருஷி மித்ரா',
-                subtitle: 'ஸ்மார்ட் விவசாய உதவியாளர்',
-                statusText: 'இணைக்கப்பட்டது',
-                weatherTitle: '🌦️ வானிலை முன்னறிவிப்பு',
-                sensorTitle: '📊 சென்சார் அளவீடுகள்',
-                recommendTitle: '💡 பரிந்துரைகள்',
-                phLabel: 'pH அளவு',
-                moistureLabel: 'ஈரப்பதம்',
-                nitrogenLabel: 'நைட்ரஜன்',
-                optimalText: 'உகந்தது',
-                lowText: 'குறைவு',
-                criticalText: 'முக்கியமான',
-                lowValue: 'குறைவு',
-                rangeText: 'வரம்பு:',
-                rangeText2: 'வரம்பு:',
-                refreshBtn: 'புதுப்பி',
-                historyBtn: 'வரலாறு',
-                rec1: '⚠️ மண் வறண்டுள்ளது',
-                rec1a: '→ உடனடியாக நீர்ப்பாசனம்',
-                rec1b: '→ மல்ச் அடுக்கு பயன்படுத்தவும்',
-                rec2: '🔴 நைட்ரஜன் பற்றாக்குறை',
-                rec2a: '→ வேப்பம் பிண்ணாக்கு: 50கி/செடி',
-                rec2b: '→ அல்லது மண்புழு உரம்: 200கி',
-                rec2c: '→ ஜீவாம்ருதம் வாரம் தெளிக்கவும்',
-                rec3: '✅ pH உகந்தது',
-                rec3a: '→ நடவடிக்கை தேவையில்லை'
-            },
-            te: {
-                appTitle: '🌾 కృషి మిత్ర',
-                subtitle: 'స్మార్ట్ వ్యవసాయ సహాయకుడు',
-                statusText: 'కనెక్ట్ అయింది',
-                weatherTitle: '🌦️ వాతావరణ సూచన',
-                sensorTitle: '📊 సెన్సార్ రీడింగ్స్',
-                recommendTitle: '💡 సిఫార్సులు',
-                phLabel: 'pH స్థాయి',
-                moistureLabel: 'తేమ',
-                nitrogenLabel: 'నైట్రోజన్',
-                optimalText: 'సరైనది',
-                lowText: 'తక్కువ',
-                criticalText: 'క్లిష్టమైన',
-                lowValue: 'తక్కువ',
-                rangeText: 'పరిధి:',
-                rangeText2: 'పరిధి:',
-                refreshBtn: 'రిఫ్రెష్',
-                historyBtn: 'చరిత్ర',
-                rec1: '⚠️ మట్టి పొడిగా ఉంది',
-                rec1a: '→ వెంటనే నీళ్లు పోయండి',
-                rec1b: '→ మల్చ్ పొర వేయండి',
-                rec2: '🔴 నైట్రోజన్ లోపం',
-                rec2a: '→ వేప కేక్ జోడించండి: 50గ్రా/మొక్క',
-                rec2b: '→ లేదా వర్మీకంపోస్ట్: 200గ్రా',
-                rec2c: '→ జీవామృత స్ప్రే వారానికి',
-                rec3: '✅ pH సరైనది',
-                rec3a: '→ చర్య అవసరం లేదు'
-            },
-            mr: {
-                appTitle: '🌾 कृषी मित्र',
-                subtitle: 'स्मार्ट शेती सहाय्यक',
-                statusText: 'जोडलेले',
-                weatherTitle: '🌦️ हवामान अंदाज',
-                sensorTitle: '📊 सेन्सर वाचन',
-                recommendTitle: '💡 शिफारसी',
-                phLabel: 'पीएच पातळी',
-                moistureLabel: 'ओलावा',
-                nitrogenLabel: 'नायट्रोजन',
-                optimalText: 'इष्टतम',
-                lowText: 'कमी',
-                criticalText: 'गंभीर',
-                lowValue: 'कमी',
-                rangeText: 'श्रेणी:',
-                rangeText2: 'श्रेणी:',
-                refreshBtn: 'रीफ्रेश',
-                historyBtn: 'इतिहास',
-                rec1: '⚠️ माती कोरडी आहे',
-                rec1a: '→ ताबडतोब पाणी द्या',
-                rec1b: '→ मल्च थर लावा',
-                rec2: '🔴 नायट्रोजन कमतरता',
-                rec2a: '→ कडुलिंबाची खळी घाला: 50ग्रॅ/झाड',
-                rec2b: '→ किंवा गांडूळ खत: 200ग्रॅ',
-                rec2c: '→ जीवामृत आठवड्यातून फवारणी',
-                rec3: '✅ पीएच इष्टतम आहे',
-                rec3a: '→ कोणतीही कृती आवश्यक नाही'
-            },
-            kn: {
-                appTitle: '🌾 ಕೃಷಿ ಮಿತ್ರ',
-                subtitle: 'ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸಹಾಯಕ',
-                statusText: 'ಸಂಪರ್ಕಿಸಲಾಗಿದೆ',
-                weatherTitle: '🌦️ ಹವಾಮಾನ ಮುನ್ಸೂಚನೆ',
-                sensorTitle: '📊 ಸೆನ್ಸಾರ್ ರೀಡಿಂಗ್ಸ್',
-                recommendTitle: '💡 ಶಿಫಾರಸುಗಳು',
-                phLabel: 'pH ಮಟ್ಟ',
-                moistureLabel: 'ತೇವಾಂಶ',
-                nitrogenLabel: 'ನೈಟ್ರೋಜನ್',
-                optimalText: 'ಅನುಕೂಲ',
-                lowText: 'ಕಡಿಮೆ',
-                criticalText: 'ನಿರ್ಣಾಯಕ',
-                lowValue: 'ಕಡಿಮೆ',
-                rangeText: 'ವ್ಯಾಪ್ತಿ:',
-                rangeText2: 'ವ್ಯಾಪ್ತಿ:',
-                refreshBtn: 'ರಿಫ್ರೆಶ್',
-                historyBtn: 'ಇತಿಹಾಸ',
-                rec1: '⚠️ ಮಣ್ಣು ಒಣಗಿದೆ',
-                rec1a: '→ ತಕ್ಷಣ ನೀರು ಹಾಕಿ',
-                rec1b: '→ ಮಲ್ಚ್ ಪದರ ಹಾಕಿ',
-                rec2: '🔴 ನೈಟ್ರೋಜನ್ ಕೊರತೆ',
-                rec2a: '→ ಬೇವಿನ ಕೇಕ್ ಸೇರಿಸಿ: 50ಗ್ರಾಂ/ಸಸ್ಯ',
-                rec2b: '→ ಅಥವಾ ವರ್ಮಿಕಂಪೋಸ್ಟ್: 200ಗ್ರಾಂ',
-                rec2c: '→ ಜೀವಾಮೃತ ವಾರಕ್ಕೊಮ್ಮೆ ಸಿಂಪಡಿಸಿ',
-                rec3: '✅ pH ಅನುಕೂಲವಾಗಿದೆ',
-                rec3a: '→ ಯಾವುದೇ ಕ್ರಮ ಅಗತ್ಯವಿಲ್ಲ'
-            },
-            bn: {
-                appTitle: '🌾 কৃষি মিত্র',
-                subtitle: 'স্মার্ট কৃষি সহায়ক',
-                statusText: 'সংযুক্ত',
-                weatherTitle: '🌦️ আবহাওয়া পূর্বাভাস',
-                sensorTitle: '📊 সেন্সর রিডিং',
-                recommendTitle: '💡 সুপারিশ',
-                phLabel: 'pH স্তর',
-                moistureLabel: 'আর্দ্রতা',
-                nitrogenLabel: 'নাইট্রোজেন',
-                optimalText: 'সর্বোত্তম',
-                lowText: 'কম',
-                criticalText: 'সংকটজনক',
-                lowValue: 'কম',
-                rangeText: 'সীমা:',
-                rangeText2: 'সীমা:',
-                refreshBtn: 'রিফ্রেশ',
-                historyBtn: 'ইতিহাস',
-                rec1: '⚠️ মাটি শুকনো',
-                rec1a: '→ অবিলম্বে জল দিন',
-                rec1b: '→ মালচ স্তর প্রয়োগ করুন',
-                rec2: '🔴 নাইট্রোজেনের ঘাটতি',
-                rec2a: '→ নিম খোল যোগ করুন: 50গ্রাম/গাছ',
-                rec2b: '→ অথবা ভার্মি কম্পোস্ট: 200গ্রাম',
-                rec2c: '→ জীবামৃত সাপ্তাহিক স্প্রে',
-                rec3: '✅ pH সর্বোত্তম',
-                rec3a: '→ কোন পদক্ষেপের প্রয়োজন নেই'
-            },
-            gu: {
-                appTitle: '🌾 કૃષિ મિત્ર',
-                subtitle: 'સ્માર્ટ ખેતી સહાયક',
-                statusText: 'જોડાયેલ',
-                weatherTitle: '🌦️ હવામાન આગાહી',
-                sensorTitle: '📊 સેન્સર રીડિંગ્સ',
-                recommendTitle: '💡 ભલામણો',
-                phLabel: 'pH સ્તર',
-                moistureLabel: 'ભેજ',
-                nitrogenLabel: 'નાઈટ્રોજન',
-                optimalText: 'શ્રેષ્ઠ',
-                lowText: 'ઓછું',
-                criticalText: 'ગંભીર',
-                lowValue: 'ઓછું',
-                rangeText: 'શ્રેણી:',
-                rangeText2: 'શ્રેણી:',
-                refreshBtn: 'રિફ્રેશ',
-                historyBtn: 'ઇતિહાસ',
-                rec1: '⚠️ માટી સૂકી છે',
-                rec1a: '→ તાત્કાલિક પાણી આપો',
-                rec1b: '→ મલ્ચ સ્તર લાગુ કરો',
-                rec2: '🔴 નાઈટ્રોજન ની ઉણપ',
-                rec2a: '→ લીમડાની ખોળ ઉમેરો: 50ગ્રામ/છોડ',
-                rec2b: '→ અથવા વર્મી કમ્પોસ્ટ: 200ગ્રામ',
-                rec2c: '→ જીવામૃત સાપ્તાહિક છંટકાવ',
-                rec3: '✅ pH શ્રેષ્ઠ છે',
-                rec3a: '→ કોઈ પગલાં લેવાની જરૂર નથી'
-            },
-            pa: {
-                appTitle: '🌾 ਕ੍ਰਿਸ਼ੀ ਮਿੱਤਰ',
-                subtitle: 'ਸਮਾਰਟ ਖੇਤੀ ਸਹਾਇਕ',
-                statusText: 'ਜੁੜਿਆ',
-                weatherTitle: '🌦️ ਮੌਸਮ ਪੂਰਵ ਅਨੁਮਾਨ',
-                sensorTitle: '📊 ਸੈਂਸਰ ਰੀਡਿੰਗਜ਼',
-                recommendTitle: '💡 ਸਿਫਾਰਸ਼ਾਂ',
-                phLabel: 'pH ਪੱਧਰ',
-                moistureLabel: 'ਨਮੀ',
-                nitrogenLabel: 'ਨਾਈਟ੍ਰੋਜਨ',
-                optimalText: 'ਉੱਤਮ',
-                lowText: 'ਘੱਟ',
-                criticalText: 'ਗੰਭੀਰ',
-                lowValue: 'ਘੱਟ',
-                rangeText: 'ਰੇਂਜ:',
-                rangeText2: 'ਰੇਂਜ:',
-                refreshBtn: 'ਤਾਜ਼ਾ',
-                historyBtn: 'ਇਤਿਹਾਸ',
-                rec1: '⚠️ ਮਿੱਟੀ ਸੁੱਕੀ ਹੈ',
-                rec1a: '→ ਤੁਰੰਤ ਪਾਣੀ ਦਿਓ',
-                rec1b: '→ ਮਲਚ ਲੇਅਰ ਲਗਾਓ',
-                rec2: '🔴 ਨਾਈਟ੍ਰੋਜਨ ਦੀ ਕਮੀ',
-                rec2a: '→ ਨਿੰਮ ਦੀ ਖਲੀ ਪਾਓ: 50ਗ੍ਰਾਮ/ਪੌਦਾ',
-                rec2b: '→ ਜਾਂ ਵਰਮੀਕੰਪੋਸਟ: 200ਗ੍ਰਾਮ',
-                rec2c: '→ ਜੀਵਾਮ੍ਰਿਤ ਹਫ਼ਤਾਵਾਰੀ ਸਪਰੇਅ',
-                rec3: '✅ pH ਉੱਤਮ ਹੈ',
-                rec3a: '→ ਕੋਈ ਕਾਰਵਾਈ ਦੀ ਲੋੜ ਨਹੀਂ'
+                historyBtn: 'इतिहास'
             }
         };
 
-        function loadWeatherCards() {
-            const container = document.getElementById('weatherScroll');
-            container.innerHTML = '';
-            
-            for (const [city, data] of Object.entries(weatherData)) {
-                const card = document.createElement('div');
-                card.className = 'weather-card';
-                card.innerHTML = `
-                    <div class="weather-city">${city}</div>
-                    <div class="weather-temp">${data.temp}°C</div>
-                    <div class="weather-condition">${data.condition}</div>
-                    <div class="weather-details">
-                        <div>💧 ${data.humidity}%</div>
-                        <div>🌬️ ${data.wind}km/h</div>
-                    </div>
-                `;
-                container.appendChild(card);
+        async function fetchWeatherForRegion(location) {
+            try {
+                const response = await fetch(
+                    `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`
+                );
+                
+                if (!response.ok) throw new Error('Weather data fetch failed');
+                
+                const data = await response.json();
+                
+                return {
+                    city: data.name,
+                    temp: Math.round(data.main.temp),
+                    condition: data.weather[0].main,
+                    humidity: data.main.humidity,
+                    wind: Math.round(data.wind.speed * 3.6) // Convert m/s to km/h
+                };
+            } catch (error) {
+                console.error('Error fetching weather:', error);
+                return null;
             }
         }
 
-        function changeLanguage() {
-            const lang = document.getElementById('languageSelector').value;
-            const t = translations[lang] || translations.en;
+        async function changeRegion() {
+            const selector = document.getElementById('regionSelector');
+            const location = selector.value;
+            const container = document.getElementById('weatherScroll');
             
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-        }
-
-        function refreshData() {
-            document.getElementById('lastUpdate').textContent = 'Just now';
-            const btn = event.target.closest('.btn');
-            btn.style.transform = 'rotate(360deg)';
-            setTimeout(() => {
-                btn.style.transform = '';
-            }, 600);
-        }
-
-        function showHistory() {
-            alert('📊 Opening historical data view...');
-        }
-
-        loadWeatherCards();
-
-        setInterval(() => {
-            const minutes = Math.floor(Math.random() * 5) + 1;
-            document.getElementById('lastUpdate').textContent = `${minutes} min ago`;
-        }, 60000);
-    </script>
-</body>
-</html>
+            container.innerHTML = '<div class="loading">Loading weather data...</div>';
+            
+            // Fetch weather for selected region and nearby cities
+ 
