@@ -65,6 +65,52 @@
             cursor: pointer;
         }
 
+        .connection-box {
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 18px;
+        }
+
+        .ip-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .ip-input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(30, 36, 62, 0.7);
+            color: #c9d1d9;
+            font-size: 14px;
+        }
+
+        .ip-input::placeholder {
+            color: rgba(201, 209, 217, 0.4);
+        }
+
+        .connect-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+            color: #1a1f3a;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .connect-btn.connected {
+            background: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
+        }
+
         .status-bar {
             padding: 14px 18px;
             border-radius: 15px;
@@ -85,9 +131,14 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 12px #ef4444;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.connected {
             background: #4ade80;
             box-shadow: 0 0 12px #4ade80;
-            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
@@ -177,15 +228,6 @@
             margin-bottom: 10px;
         }
 
-        .weather-details {
-            display: flex;
-            justify-content: space-around;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 12px;
-            color: rgba(201, 209, 217, 0.6);
-        }
-
         .sensor-section {
             margin-bottom: 20px;
         }
@@ -236,11 +278,22 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
+        .badge-none {
+            background: rgba(100, 100, 120, 0.15);
+            color: #888;
+            border: 1px solid rgba(100, 100, 120, 0.3);
+        }
+
         .sensor-value {
             font-size: 42px;
             font-weight: bold;
             color: #ffffff;
             margin: 10px 0;
+        }
+
+        .sensor-value.no-data {
+            color: rgba(201, 209, 217, 0.3);
+            font-size: 32px;
         }
 
         .sensor-range {
@@ -328,12 +381,58 @@
             font-size: 13px;
         }
 
+        .message-log {
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 12px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 12px;
+            font-size: 12px;
+            color: rgba(201, 209, 217, 0.7);
+        }
+
+        .message-log::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .message-log::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .message-log::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        .log-message {
+            margin-bottom: 6px;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .log-time {
+            color: #4ade80;
+            margin-right: 8px;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(201, 209, 217, 0.4);
+            font-size: 14px;
+        }
+
         @media (max-width: 600px) {
             .language-selector {
                 position: static;
                 margin: 0 auto 15px;
                 display: block;
                 width: fit-content;
+            }
+            
+            .ip-input-group {
+                flex-direction: column;
             }
         }
     </style>
@@ -358,12 +457,26 @@
             <p class="subtitle" id="sub">Smart Farming Assistant</p>
         </div>
 
+        <div class="connection-box glass">
+            <div class="ip-input-group">
+                <input type="text" class="ip-input" id="ipInput" placeholder="Enter Arduino/ESP32 IP (e.g. 192.168.1.100)" value="">
+                <button class="connect-btn" id="connectBtn" onclick="toggleConnection()">
+                    🔌 <span id="connectText">Connect</span>
+                </button>
+            </div>
+            <div class="message-log" id="messageLog">
+                <div class="log-message">
+                    <span class="log-time">[System]</span> Enter Arduino IP and click Connect to start...
+                </div>
+            </div>
+        </div>
+
         <div class="status-bar glass">
             <div class="status-indicator">
-                <div class="status-dot"></div>
-                <span id="status">Connected</span>
+                <div class="status-dot" id="statusDot"></div>
+                <span id="status">Disconnected</span>
             </div>
-            <div style="font-size: 12px;" id="time">2 min ago</div>
+            <div style="font-size: 12px;" id="time">--:--</div>
         </div>
 
         <div class="weather-scroll-container">
@@ -380,29 +493,20 @@
                         <option value="28.4595,77.0266">Gurugram</option>
                         <option value="28.7041,77.1025">Faridabad</option>
                         <option value="30.1575,77.2840">Ambala</option>
-                        <option value="29.3803,76.9694">Karnal</option>
-                        <option value="28.9931,76.8672">Panipat</option>
                     </optgroup>
                     <optgroup label="Punjab">
                         <option value="30.9010,75.8573">Ludhiana</option>
                         <option value="31.6340,74.8723">Amritsar</option>
-                        <option value="31.3260,75.5762">Jalandhar</option>
-                        <option value="30.7046,76.7179">Patiala</option>
                     </optgroup>
                     <optgroup label="Delhi NCR">
                         <option value="28.6139,77.2090">Delhi</option>
                         <option value="28.6692,77.4538">Noida</option>
-                        <option value="28.6304,77.3768">Ghaziabad</option>
                     </optgroup>
                     <optgroup label="Major Cities">
                         <option value="19.0760,72.8777">Mumbai</option>
                         <option value="12.9716,77.5946">Bangalore</option>
                         <option value="13.0827,80.2707">Chennai</option>
                         <option value="22.5726,88.3639">Kolkata</option>
-                        <option value="17.3850,78.4867">Hyderabad</option>
-                        <option value="18.5204,73.8567">Pune</option>
-                        <option value="23.0225,72.5714">Ahmedabad</option>
-                        <option value="26.9124,75.7873">Jaipur</option>
                     </optgroup>
                 </select>
             </div>
@@ -418,58 +522,47 @@
             <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>🌡️</span> <span id="ph">pH Level</span></div>
-                    <span class="sensor-badge badge-optimal"><span id="opt">Optimal</span></span>
+                    <span class="sensor-badge badge-none" id="phBadge"><span id="nodata">No Data</span></span>
                 </div>
-                <div class="sensor-value">6.5</div>
-                <div class="sensor-range"><span id="r1">Range:</span> 6.0-7.5</div>
+                <div class="sensor-value no-data" id="phValue">--</div>
+                <div class="sensor-range"><span id="r1">Range:</span> 6.0-7.5 optimal</div>
                 <div class="progress-bar">
-                    <div class="progress-fill progress-optimal" style="width: 87%;"></div>
+                    <div class="progress-fill progress-optimal" id="phProgress" style="width: 0%;"></div>
                 </div>
             </div>
 
             <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>💧</span> <span id="moist">Moisture</span></div>
-                    <span class="sensor-badge badge-warning"><span id="low">Low</span></span>
+                    <span class="sensor-badge badge-none" id="moistBadge"><span id="nodata2">No Data</span></span>
                 </div>
-                <div class="sensor-value">45%</div>
+                <div class="sensor-value no-data" id="moistValue">--</div>
                 <div class="sensor-range"><span id="r2">Range:</span> 60-80% optimal</div>
                 <div class="progress-bar">
-                    <div class="progress-fill progress-warning" style="width: 45%;"></div>
+                    <div class="progress-fill progress-warning" id="moistProgress" style="width: 0%;"></div>
                 </div>
             </div>
 
             <div class="sensor-card glass">
                 <div class="sensor-header">
                     <div class="sensor-name"><span>🌱</span> <span id="nitro">Nitrogen</span></div>
-                    <span class="sensor-badge badge-critical"><span id="crit">Critical</span></span>
+                    <span class="sensor-badge badge-none" id="nitroBadge"><span id="nodata3">No Data</span></span>
                 </div>
-                <div class="sensor-value" id="lval">Low</div>
-                <div class="sensor-range">Green Index: 95/255</div>
+                <div class="sensor-value no-data" id="nitroValue">--</div>
+                <div class="sensor-range">Green Index: <span id="greenIndex">--</span>/255</div>
                 <div class="progress-bar">
-                    <div class="progress-fill progress-critical" style="width: 30%;"></div>
+                    <div class="progress-fill progress-critical" id="nitroProgress" style="width: 0%;"></div>
                 </div>
             </div>
         </div>
 
         <div class="recommendations-section">
-            <h3 class="section-title" id="rtitle">💡 Recommendations</h3>
-            
-            <div class="recommendation-card glass">
-                <div class="recommendation-title">⚠️ <span id="rec1">Soil is dry</span></div>
-                <span class="recommendation-action">→ <span id="rec1a">Water immediately</span></span>
-                <span class="recommendation-action">→ <span id="rec1b">Apply mulch layer</span></span>
-            </div>
-
-            <div class="recommendation-card glass">
-                <div class="recommendation-title">🔴 <span id="rec2">Nitrogen deficiency</span></div>
-                <span class="recommendation-action">→ <span id="rec2a">Add Neem Cake: 50g/plant</span></span>
-                <span class="recommendation-action">→ <span id="rec2b">Or Vermicompost: 200g</span></span>
-            </div>
-
-            <div class="recommendation-card glass">
-                <div class="recommendation-title">✅ <span id="rec3">pH is optimal</span></div>
-                <span class="recommendation-action">→ <span id="rec3a">No action needed</span></span>
+            <h3 class="section-title" id="rtitle">💡 Smart Recommendations</h3>
+            <div id="recommendationsBox">
+                <div class="no-data-message">
+                    <p>🤖 Connect to Arduino to get AI-powered recommendations</p>
+                    <p style="margin-top: 10px; font-size: 12px;">Recommendations will be generated based on real sensor data</p>
+                </div>
             </div>
         </div>
 
@@ -485,18 +578,416 @@
 
     <script>
         const lang = {
-            en: {title:'Mitti Mitra Robot',sub:'Smart Farming Assistant',status:'Connected',wtitle:'🌦️ Weather Forecast',stitle:'📊 Sensor Readings',rtitle:'💡 Recommendations',ph:'pH Level',moist:'Moisture',nitro:'Nitrogen',opt:'Optimal',low:'Low',crit:'Critical',lval:'Low',r1:'Range:',r2:'Range:',rbtn:'Refresh',hbtn:'History',rec1:'Soil is dry',rec1a:'→ Water immediately',rec1b:'→ Apply mulch layer',rec2:'Nitrogen deficiency',rec2a:'→ Add Neem Cake: 50g/plant',rec2b:'→ Or Vermicompost: 200g',rec3:'pH is optimal',rec3a:'→ No action needed'},
-            hi: {title:'मिट्टी मित्र रोबोट',sub:'स्मार्ट खेती सहायक',status:'जुड़ा',wtitle:'🌦️ मौसम',stitle:'📊 सेंसर',rtitle:'💡 सिफारिशें',ph:'पीएच',moist:'नमी',nitro:'नाइट्रोजन',opt:'बढ़िया',low:'कम',crit:'गंभीर',lval:'कम',r1:'सीमा:',r2:'सीमा:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'मिट्टी सूखी है',rec1a:'→ तुरंत पानी दें',rec1b:'→ गीली घास लगाएं',rec2:'नाइट्रोजन की कमी',rec2a:'→ नीम खली 50g डालें',rec2b:'→ या वर्मीकम्पोस्ट 200g',rec3:'पीएच ठीक है',rec3a:'→ कोई कार्रवाई नहीं'},
-            ta: {title:'மிட்டி மித்ரா',sub:'விவசாய உதவி',status:'இணைப்பு',wtitle:'🌦️ வானிலை',stitle:'📊 சென்சார்',rtitle:'💡 பரிந்துரைகள்',ph:'pH',moist:'ஈரம்',nitro:'நைட்ரஜன்',opt:'நல்லது',low:'குறைவு',crit:'அவசரம்',lval:'குறைவு',r1:'வரம்பு:',r2:'வரம்பு:',rbtn:'புதுப்பி',hbtn:'வரலாறு',rec1:'மண்건조',rec1a:'→ உடனடியாக நீர் பாய்ச்சவும்',rec1b:'→ சறுக்கு போடவும்',rec2:'நைட்ரஜன் குறைபாடு',rec2a:'→ நீம் புண்ணாக்கு 50g',rec2b:'→ அல்லது பூச்சி உரம் 200g',rec3:'pH சரியாக உள்ளது',rec3a:'→ நடவடிக்கை தேவையில்லை'},
-            te: {title:'మిట్టి మిత్ర',sub:'వ్యవసాయ సహాయక',status:'కనెక్ట్',wtitle:'🌦️ వాతావరణం',stitle:'📊 సెన్సార్',rtitle:'💡 సూచనలు',ph:'pH',moist:'తేమ',nitro:'నైట్రోజన్',opt:'మంచి',low:'తక్కువ',crit:'తీవ్రం',lval:'తక్కువ',r1:'పరిధి:',r2:'పరిధి:',rbtn:'రిఫ్రెష్',hbtn:'చరిత్ర',rec1:'మట్టి건조',rec1a:'→ వెంటనే నీళ్లు పోయండి',rec1b:'→ మల్చ్ పెట్టండి',rec2:'నైట్రోజన్ కూర్పు',rec2a:'→ నీమ్ కేక్ 50g',rec2b:'→ లేదా వర్మీకంపోస్ట్ 200g',rec3:'pH సరిగ్గా ఉంది',rec3a:'→ చర్య అవసరం లేదు'},
-            mr: {title:'मिट्टी मित्र',sub:'शेती मदत',status:'जोडले',wtitle:'🌦️ हवामान',stitle:'📊 सेन्सर',rtitle:'💡 सूचना',ph:'pH',moist:'ओलावा',nitro:'नायट्रोजन',opt:'चांगले',low:'कमी',crit:'गंभीर',lval:'कमी',r1:'श्रेणी:',r2:'श्रेणी:',rbtn:'रीफ्रेश',hbtn:'इतिहास',rec1:'मिट्टी कोरडी आहे',rec1a:'→ लगेच पाणी द्या',rec1b:'→ मल्च लावा',rec2:'नायट्रोजन कमी',rec2a:'→ नीम केक 50g',rec2b:'→ किंवा व्हर्मीकम्पोस्ट 200g',rec3:'pH ठीक आहे',rec3a:'→ कार्य करण्याची गरज नाही'},
-            kn: {title:'ಮಿಟ್ಟಿ ಮಿತ್ರ',sub:'ಕೃಷಿ ಸಹಾಯಕ',status:'ಸಂಪರ್ಕ',wtitle:'🌦️ ಹವಾಮಾನ',stitle:'📊 ಸೆನ್ಸಾರ್',rtitle:'💡 ಸೂಚನೆಗಳು',ph:'pH',moist:'ತೇವಾಂಶ',nitro:'ನೈಟ್ರೋಜನ್',opt:'ಉತ್ತಮ',low:'ಕಡಿಮೆ',crit:'ತೀವ್ರ',lval:'ಕಡಿಮೆ',r1:'ವ್ಯಾಪ್ತಿ:',r2:'ವ್ಯಾಪ್ತಿ:',rbtn:'ರಿಫ್ರೆಶ್',hbtn:'ಇತಿಹಾಸ',rec1:'ಮಣ್ಣು ಒಣಗಿದೆ',rec1a:'→ ತಕ್ಷಣ ನೀರು ಹಾಕಿ',rec1b:'→ ಮಲ್ಚ್ ಹಾಕಿ',rec2:'ನೈಟ್ರೋಜನ್ ಕೊರತೆ',rec2a:'→ ನೀಮ್ ಕೇಕ್ 50g',rec2b:'→ ಅಥವಾ ವರ್ಮಿಕಂಪೋಸ್ಟ್ 200g',rec3:'pH ಸರಿಯಾಗಿದೆ',rec3a:'→ ಯಾವುದೇ ಕ್ರಮ ಬೇಕಾಗಿಲ್ಲ'},
-            bn: {title:'মিট্টি মিত্র',sub:'কৃষি সাহায্য',status:'সংযুক্ত',wtitle:'🌦️ আবহাওয়া',stitle:'📊 সেন্সর',rtitle:'💡 পরামর্শ',ph:'pH',moist:'আর্দ্রতা',nitro:'নাইট্রোজেন',opt:'ভাল',low:'কম',crit:'জরুরি',lval:'কম',r1:'সীমা:',r2:'সীমা:',rbtn:'রিফ্রেশ',hbtn:'ইতিহাস',rec1:'মাটি শুষ্ক',rec1a:'→ এখনই জল দিন',rec1b:'→ সার দিন',rec2:'নাইট্রোজেন ঘাটতি',rec2a:'→ নিম খৈল 50g',rec2b:'→ বা ভার্মিকম্পোস্ট 200g',rec3:'pH সঠিক',rec3a:'→ কোনো ব্যবস্থা প্রয়োজন নেই'},
-            gu: {title:'મિટ્ટી મિત્ર',sub:'ખેતી મદદ',status:'જોડાયું',wtitle:'🌦️ હવામાન',stitle:'📊 સેન્સર',rtitle:'💡 સલાહ',ph:'pH',moist:'ભેજ',nitro:'નાઈટ્રોજન',opt:'સારું',low:'ઓછું',crit:'ગંભીર',lval:'ઓછું',r1:'શ્રેણી:',r2:'શ્રેણી:',rbtn:'રિફ્રેશ',hbtn:'ઇતિહાસ',rec1:'માટી건조',rec1a:'→ તરત જ પાણી આપો',rec1b:'→ અછાર પોતાર કરો',rec2:'નાઈટ્રોજન ઘટ',rec2a:'→ નીમ કેક 50g',rec2b:'→ અથવા વર્મીકમ્પોસ્ટ 200g',rec3:'pH સારું છે',rec3a:'→ કોઈ પગલાં આવશ્યક નથી'},
-            pa: {title:'ਮਿੱਟੀ ਮਿੱਤਰ',sub:'ਖੇਤੀ ਸਹਾਇਕ',status:'ਜੁੜਿਆ',wtitle:'🌦️ ਮੌਸਮ',stitle:'📊 ਸੈਂਸਰ',rtitle:'💡 ਸਲਾਹ',ph:'pH',moist:'ਨਮੀ',nitro:'ਨਾਈਟ੍ਰੋਜਨ',opt:'ਵਧੀਆ',low:'ਘੱਟ',crit:'ਗੰਭੀਰ',lval:'ਘੱਟ',r1:'ਰੇਂਜ:',r2:'ਰੇਂਜ:',rbtn:'ਤਾਜ਼ਾ',hbtn:'ਇਤਿਹਾਸ',rec1:'ਮਿੱਟੀ ਖੁਸ਼ਕ',rec1a:'→ ਫੌਰਨ ਪਾਣੀ ਦਿਓ',rec1b:'→ ਮਲਚ ਲਾਓ',rec2:'ਨਾਈਟ੍ਰੋਜਨ ਘਾਟ',rec2a:'→ ਨੀਮ ਕੇਕ 50g',rec2b:'→ ਜ ਵਰਮੀਕਮਪੋਸਟ 200g',rec3:'pH ਠੀਕ ਹੈ',rec3a:'→ ਕੋਈ ਕਾਰ ਵਾਈ ਨਹੀਂ'},
-            ml: {title:'മിട്ടി മിത്ര',sub:'കൃഷി സഹായി',status:'കണക്റ്റഡ്',wtitle:'🌦️ കാലാവസ്ഥ',stitle:'📊 സെൻസർ',rtitle:'💡 നിർദ്ദേശം',ph:'pH',moist:'ഈർപ്പം',nitro:'നൈട്രജൻ',opt:'നല്ലത്',low:'കുറവ്',crit:'ഗുരുതരം',lval:'കുറവ്',r1:'പരിധി:',r2:'പരിധി:',rbtn:'റിഫ്രഷ്',hbtn:'ചരിത്രം',rec1:'മണ്ണ് കാടികിട്ടിരിക്കുന്നു',rec1a:'→ ഉടനെ വെള്ളം ഒഴിക്കുക',rec1b:'→ മൽച്ച് ചേർക്കുക',rec2:'നൈട്രജൻ കുറവ്',rec2a:'→ നീം കേക് 50g',rec2b:'→ അല്ലെങ്കിൽ വെർമിക്കൊമ്പോസ്റ്റ് 200g',rec3:'pH സരിയാണ്',rec3a:'→ ഒരു നടപടിയും ആവശ്യമില്ല'},
-            or: {title:'ମିଟି ମିତ୍ର',sub:'କୃଷି ସହାୟକ',status:'ସଂଯୁକ୍ତ',wtitle:'🌦️ ପାଣିପାଗ',stitle:'📊 ସେନ୍ସର',rtitle:'💡 ପରାମର୍ଶ',ph:'pH',moist:'ଆର୍ଦ୍ରତା',nitro:'ନାଇଟ୍ରୋଜେନ',opt:'ଉତ୍ତମ',low:'କମ୍',crit:'ଗୁରୁତର',lval:'କମ୍',r1:'ସୀମା:',r2:'ସୀମା:',rbtn:'ରିଫ୍ରେଶ',hbtn:'ଇତିହାସ',rec1:'ମାଟି ଶୁଷ୍କ',rec1a:'→ ତଥକ୍ଷଣାତ ଜଳ ଦିଅନ୍ତୁ',rec1b:'→ ମଲ୍ଚ ଦିଅନ୍ତୁ',rec2:'ନାଇଟ୍ରୋଜେନ ଅଭାବ',rec2a:'→ ନିମ କେକ 50g',rec2b:'→ କିମ୍ବା ଭର୍ମିକମ୍ପୋଷ୍ଟ 200g',rec3:'pH ଠିକ ଅଛି',rec3a:'→ କୌଣସି ପଦକ୍ଷେପ ଆବଶ୍ୟକ ନାହିଁ'}
+            en: {title:'Mitti Mitra Robot',sub:'Smart Farming Assistant',status:'Connected',statusDis:'Disconnected',wtitle:'🌦️ Weather Forecast',stitle:'📊 Sensor Readings',rtitle:'💡 Smart Recommendations',ph:'pH Level',moist:'Moisture',nitro:'Nitrogen',nodata:'No Data',r1:'Range:',r2:'Range:',rbtn:'Refresh',hbtn:'History',connectText:'Connect',disconnectText:'Disconnect'},
+            hi: {title:'मिट्टी मित्र रोबोट',sub:'स्मार्ट खेती सहायक',status:'जुड़ा',statusDis:'डिस्कनेक्ट',wtitle:'🌦️ मौसम',stitle:'📊 सेंसर',rtitle:'💡 स्मार्ट सिफारिशें',ph:'पीएच',moist:'नमी',nitro:'नाइट्रोजन',nodata:'डेटा नहीं',r1:'सीमा:',r2:'सीमा:',rbtn:'रीफ्रेश',hbtn:'इतिहास',connectText:'जोड़ें',disconnectText:'हटाएं'}
         };
+
+        let isConnected = false;
+        let sensorInterval = null;
+        let arduinoIP = '';
+        let sensorData = {ph: null, moisture: null, nitrogen: null};
+
+        async function connectToArduino(ip) {
+            try {
+                addLog(`Connecting to ${ip}...`);
+                const response = await fetch(`http://${ip}/data`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateSensorData(data);
+                    addLog(`✓ Connected! Receiving data...`);
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                addLog(`✗ Failed: ${error.message}`);
+                return false;
+            }
+        }
+
+        async function fetchSensorData() {
+            if (!isConnected || !arduinoIP) return;
+            
+            try {
+                const response = await fetch(`http://${arduinoIP}/data`, {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateSensorData(data);
+                    updateTimestamp();
+                }
+            } catch (error) {
+                addLog(`⚠ Connection lost`);
+            }
+        }
+
+        function updateSensorData(data) {
+            // Update pH
+            if (data.ph !== undefined && data.ph !== null) {
+                sensorData.ph = data.ph;
+                const phEl = document.getElementById('phValue');
+                phEl.textContent = data.ph.toFixed(1);
+                phEl.classList.remove('no-data');
+                
+                const phPercent = ((data.ph - 5.5) / 3) * 100;
+                document.getElementById('phProgress').style.width = Math.min(100, Math.max(0, phPercent)) + '%';
+                
+                const phBadge = document.getElementById('phBadge');
+                if (data.ph >= 6.0 && data.ph <= 7.5) {
+                    phBadge.className = 'sensor-badge badge-optimal';
+                    phBadge.innerHTML = '<span>✓ Optimal</span>';
+                } else if (data.ph >= 5.5 && data.ph <= 8.0) {
+                    phBadge.className = 'sensor-badge badge-warning';
+                    phBadge.innerHTML = '<span>⚠ Warning</span>';
+                } else {
+                    phBadge.className = 'sensor-badge badge-critical';
+                    phBadge.innerHTML = '<span>● Critical</span>';
+                }
+            }
+            
+            // Update Moisture
+            if (data.moisture !== undefined && data.moisture !== null) {
+                sensorData.moisture = data.moisture;
+                const moistEl = document.getElementById('moistValue');
+                moistEl.textContent = data.moisture + '%';
+                moistEl.classList.remove('no-data');
+                
+                document.getElementById('moistProgress').style.width = data.moisture + '%';
+                
+                const moistBadge = document.getElementById('moistBadge');
+                if (data.moisture >= 60 && data.moisture <= 80) {
+                    moistBadge.className = 'sensor-badge badge-optimal';
+                    moistBadge.innerHTML = '<span>✓ Optimal</span>';
+                } else if (data.moisture >= 40 && data.moisture < 60) {
+                    moistBadge.className = 'sensor-badge badge-warning';
+                    moistBadge.innerHTML = '<span>⚠ Low</span>';
+                } else if (data.moisture < 40) {
+                    moistBadge.className = 'sensor-badge badge-critical';
+                    moistBadge.innerHTML = '<span>● Critical</span>';
+                } else {
+                    moistBadge.className = 'sensor-badge badge-warning';
+                    moistBadge.innerHTML = '<span>⚠ High</span>';
+                }
+            }
+            
+            // Update Nitrogen
+            if (data.nitrogen !== undefined && data.nitrogen !== null) {
+                sensorData.nitrogen = data.nitrogen;
+                const nitrogenPercent = (data.nitrogen / 255) * 100;
+                document.getElementById('greenIndex').textContent = data.nitrogen;
+                document.getElementById('nitroProgress').style.width = nitrogenPercent + '%';
+                
+                const nitroEl = document.getElementById('nitroValue');
+                nitroEl.classList.remove('no-data');
+                
+                const nitroBadge = document.getElementById('nitroBadge');
+                if (data.nitrogen >= 150) {
+                    nitroEl.textContent = 'High';
+                    nitroBadge.className = 'sensor-badge badge-optimal';
+                    nitroBadge.innerHTML = '<span>✓ Good</span>';
+                } else if (data.nitrogen >= 100) {
+                    nitroEl.textContent = 'Medium';
+                    nitroBadge.className = 'sensor-badge badge-warning';
+                    nitroBadge.innerHTML = '<span>⚠ Medium</span>';
+                } else {
+                    nitroEl.textContent = 'Low';
+                    nitroBadge.className = 'sensor-badge badge-critical';
+                    nitroBadge.innerHTML = '<span>● Low</span>';
+                }
+            }
+            
+            generateRecommendations();
+            addLog(`✓ Updated: pH=${data.ph || 'N/A'} | M=${data.moisture || 'N/A'}% | N=${data.nitrogen || 'N/A'}`);
+        }
+
+        function generateRecommendations() {
+            const box = document.getElementById('recommendationsBox');
+            const recommendations = [];
+            
+            // pH Recommendations
+            if (sensorData.ph !== null) {
+                if (sensorData.ph < 5.5) {
+                    recommendations.push({
+                        title: '🔴 pH Too Acidic',
+                        icon: '🔴',
+                        actions: [
+                            'Add agricultural lime or dolomite (500g/sq.m)',
+                            'Mix wood ash into soil (200g/sq.m)',
+                            'Avoid acidic fertilizers temporarily',
+                            'Retest pH after 1 week'
+                        ]
+                    });
+                } else if (sensorData.ph > 7.5 && sensorData.ph < 8.5) {
+                    recommendations.push({
+                        title: '⚠️ pH Too Alkaline',
+                        icon: '⚠️',
+                        actions: [
+                            'Add sulfur powder (100g/sq.m)',
+                            'Mix organic compost (2kg/sq.m)',
+                            'Use acidic fertilizers like ammonium sulfate',
+                            'Retest pH in 2 weeks'
+                        ]
+                    });
+                } else if (sensorData.ph >= 8.5) {
+                    recommendations.push({
+                        title: '🔴 pH Extremely Alkaline',
+                        icon: '🔴',
+                        actions: [
+                            'URGENT: Add gypsum (300g/sq.m)',
+                            'Apply elemental sulfur (150g/sq.m)',
+                            'Add peat moss or pine needles',
+                            'Flush soil with acidic water solution'
+                        ]
+                    });
+                } else if (sensorData.ph >= 6.0 && sensorData.ph <= 7.5) {
+                    recommendations.push({
+                        title: '✅ pH is Perfect',
+                        icon: '✅',
+                        actions: [
+                            'Maintain current soil management',
+                            'Continue regular watering schedule',
+                            'Monitor pH monthly'
+                        ]
+                    });
+                }
+            }
+            
+            // Moisture Recommendations
+            if (sensorData.moisture !== null) {
+                if (sensorData.moisture < 30) {
+                    recommendations.push({
+                        title: '🔴 Critical Drought',
+                        icon: '🔴',
+                        actions: [
+                            'URGENT: Water immediately (5L/sq.m)',
+                            'Apply mulch layer (5cm thick)',
+                            'Check irrigation system',
+                            'Water twice daily until recovery'
+                        ]
+                    });
+                } else if (sensorData.moisture >= 30 && sensorData.moisture < 50) {
+                    recommendations.push({
+                        title: '⚠️ Soil is Dry',
+                        icon: '⚠️',
+                        actions: [
+                            'Water thoroughly (3L/sq.m)',
+                            'Apply organic mulch layer',
+                            'Increase watering frequency',
+                            'Check for drainage issues'
+                        ]
+                    });
+                } else if (sensorData.moisture >= 50 && sensorData.moisture < 60) {
+                    recommendations.push({
+                        title: '⚠️ Moisture Below Optimal',
+                        icon: '⚠️',
+                        actions: [
+                            'Water moderately (2L/sq.m)',
+                            'Monitor daily',
+                            'Consider drip irrigation'
+                        ]
+                    });
+                } else if (sensorData.moisture >= 60 && sensorData.moisture <= 80) {
+                    recommendations.push({
+                        title: '✅ Moisture Perfect',
+                        icon: '✅',
+                        actions: [
+                            'Maintain current watering schedule',
+                            'Excellent growing conditions',
+                            'Continue monitoring'
+                        ]
+                    });
+                } else if (sensorData.moisture > 80 && sensorData.moisture < 90) {
+                    recommendations.push({
+                        title: '⚠️ Soil Too Wet',
+                        icon: '⚠️',
+                        actions: [
+                            'Stop watering for 2-3 days',
+                            'Improve drainage',
+                            'Check for waterlogging',
+                            'Risk of root rot'
+                        ]
+                    });
+                } else if (sensorData.moisture >= 90) {
+                    recommendations.push({
+                        title: '🔴 Waterlogged Soil',
+                        icon: '🔴',
+                        actions: [
+                            'URGENT: Stop all watering',
+                            'Create drainage channels',
+                            'Aerate soil carefully',
+                            'May need to transplant'
+                        ]
+                    });
+                }
+            }
+            
+            // Nitrogen Recommendations
+            if (sensorData.nitrogen !== null) {
+                if (sensorData.nitrogen < 80) {
+                    recommendations.push({
+                        title: '🔴 Severe Nitrogen Deficiency',
+                        icon: '🔴',
+                        actions: [
+                            'Add Neem Cake: 100g per plant',
+                            'Apply Vermicompost: 500g per plant',
+                            'Spray liquid seaweed fertilizer',
+                            'Use nitrogen-rich compost tea',
+                            'Jeevamrit spray twice weekly'
+                        ]
+                    });
+                } else if (sensorData.nitrogen >= 80 && sensorData.nitrogen < 120) {
+                    recommendations.push({
+                        title: '⚠️ Low Nitrogen Levels',
+                        icon: '⚠️',
+                        actions: [
+                            'Add Neem Cake: 50g per plant',
+                            'Apply Vermicompost: 300g per plant',
+                            'Use organic nitrogen fertilizer',
+                            'Jeevamrit spray weekly'
+                        ]
+                    });
+                } else if (sensorData.nitrogen >= 120 && sensorData.nitrogen < 150) {
+                    recommendations.push({
+                        title: '⚠️ Nitrogen Slightly Low',
+                        icon: '⚠️',
+                        actions: [
+                            'Light application of compost',
+                            'Maintain current fertilization',
+                            'Monitor plant growth'
+                        ]
+                    });
+                } else if (sensorData.nitrogen >= 150 && sensorData.nitrogen <= 200) {
+                    recommendations.push({
+                        title: '✅ Nitrogen Optimal',
+                        icon: '✅',
+                        actions: [
+                            'Perfect nitrogen levels',
+                            'Maintain current fertilization schedule',
+                            'Plants should be thriving'
+                        ]
+                    });
+                } else if (sensorData.nitrogen > 200) {
+                    recommendations.push({
+                        title: '⚠️ Nitrogen Too High',
+                        icon: '⚠️',
+                        actions: [
+                            'Stop nitrogen fertilizers',
+                            'Flush soil with water',
+                            'May cause leaf burn',
+                            'Switch to phosphorus-rich fertilizer'
+                        ]
+                    });
+                }
+            }
+            
+            // Render recommendations
+            if (recommendations.length === 0) {
+                box.innerHTML = `
+                    <div class="no-data-message">
+                        <p>🤖 Waiting for sensor data...</p>
+                        <p style="margin-top: 10px; font-size: 12px;">Connect to Arduino to get AI recommendations</p>
+                    </div>
+                `;
+            } else {
+                box.innerHTML = recommendations.map(rec => `
+                    <div class="recommendation-card glass">
+                        <div class="recommendation-title">${rec.icon} <span>${rec.title}</span></div>
+                        ${rec.actions.map(action => `<span class="recommendation-action">→ ${action}</span>`).join('')}
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function toggleConnection() {
+            const ip = document.getElementById('ipInput').value.trim();
+            const btn = document.getElementById('connectBtn');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('status');
+            const connectText = document.getElementById('connectText');
+            
+            if (!isConnected) {
+                if (!ip) {
+                    addLog('✗ Please enter IP address');
+                    return;
+                }
+                
+                arduinoIP = ip;
+                const connected = await connectToArduino(ip);
+                
+                if (connected) {
+                    isConnected = true;
+                    btn.classList.add('connected');
+                    connectText.textContent = 'Disconnect';
+                    statusDot.classList.add('connected');
+                    statusText.textContent = 'Connected';
+                    
+                    sensorInterval = setInterval(fetchSensorData, 2000);
+                    addLog('✓ Auto-refresh: ON (2s)');
+                }
+            } else {
+                isConnected = false;
+                arduinoIP = '';
+                btn.classList.remove('connected');
+                connectText.textContent = 'Connect';
+                statusDot.classList.remove('connected');
+                statusText.textContent = 'Disconnected';
+                
+                if (sensorInterval) {
+                    clearInterval(sensorInterval);
+                    sensorInterval = null;
+                }
+                
+                // Reset to no data
+                sensorData = {ph: null, moisture: null, nitrogen: null};
+                document.getElementById('phValue').textContent = '--';
+                document.getElementById('phValue').classList.add('no-data');
+                document.getElementById('moistValue').textContent = '--';
+                document.getElementById('moistValue').classList.add('no-data');
+                document.getElementById('nitroValue').textContent = '--';
+                document.getElementById('nitroValue').classList.add('no-data');
+                document.getElementById('greenIndex').textContent = '--';
+                document.getElementById('phProgress').style.width = '0%';
+                document.getElementById('moistProgress').style.width = '0%';
+                document.getElementById('nitroProgress').style.width = '0%';
+                
+                document.getElementById('phBadge').className = 'sensor-badge badge-none';
+                document.getElementById('phBadge').innerHTML = '<span>No Data</span>';
+                document.getElementById('moistBadge').className = 'sensor-badge badge-none';
+                document.getElementById('moistBadge').innerHTML = '<span>No Data</span>';
+                document.getElementById('nitroBadge').className = 'sensor-badge badge-none';
+                document.getElementById('nitroBadge').innerHTML = '<span>No Data</span>';
+                
+                generateRecommendations();
+                
+                addLog('✓ Disconnected');
+                document.getElementById('time').textContent = '--:--';
+            }
+        }
+
+        function addLog(message) {
+            const log = document.getElementById('messageLog');
+            const time = new Date().toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit'});
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-message';
+            logEntry.innerHTML = `<span class="log-time">[${time}]</span> ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+            
+            while (log.children.length > 20) {
+                log.removeChild(log.firstChild);
+            }
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            document.getElementById('time').textContent = now.toLocaleTimeString('en-US', {hour12: false, hour: '2-digit', minute: '2-digit'});
+        }
 
         async function getWeather(lat, lon) {
             try {
@@ -558,7 +1049,7 @@
                     <div style="font-size: 32px; margin: 8px 0;">${getWeatherIcon(code)}</div>
                     <div class="weather-temp">${maxTemp}°</div>
                     <div style="font-size: 12px; color: rgba(201, 209, 217, 0.6); margin-bottom: 8px;">${minTemp}°</div>
-                    <div class="weather-condition">${data.daily.weathercode[i] ? 'Fair' : 'Clear'}</div>
+                    <div class="weather-condition">${code === 0 ? 'Clear' : 'Fair'}</div>
                     ${data.daily.precipitation_probability_max[i] > 30 ? `<div style="color: #22d3ee; font-size: 11px; margin-top: 5px;">💧 ${data.daily.precipitation_probability_max[i]}%</div>` : ''}
                 `;
                 box.appendChild(card);
@@ -572,25 +1063,29 @@
                 const el = document.getElementById(k);
                 if(el) el.textContent = t[k];
             });
+            
+            const connectText = document.getElementById('connectText');
+            connectText.textContent = isConnected ? (t.disconnectText || 'Disconnect') : (t.connectText || 'Connect');
         }
 
         function refresh() {
+            if (isConnected) {
+                fetchSensorData();
+                addLog('Manual refresh');
+            }
             loadWeather();
         }
 
         function history() {
-            alert('📊 Opening history...');
+            alert('📊 Sensor history feature - Coming soon!');
         }
 
         document.getElementById('langSelect').addEventListener('change', changeLang);
         document.getElementById('regionSelect').addEventListener('change', loadWeather);
 
         loadWeather();
-
-        setInterval(() => {
-            const m = Math.floor(Math.random() * 5) + 1;
-            document.getElementById('time').textContent = `${m} min ago`;
-        }, 60000);
+        generateRecommendations();
+        addLog('System ready. Enter Arduino IP to start.');
     </script>
 </body>
 </html>
